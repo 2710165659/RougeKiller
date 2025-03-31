@@ -1,6 +1,8 @@
 let blocklist = {};
 blocklist.common = {};
 blocklist.common.pws_option_val = "off";
+
+console.log('[RogueKiller] Service worker started');
 blocklist.common.GET_BLOCKLIST = 'getBlocklist';
 blocklist.common.ADD_TO_BLOCKLIST = 'addToBlocklist';
 blocklist.common.ADD_LIST_TO_BLOCKLIST = 'addListToBlocklist';
@@ -103,13 +105,16 @@ blocklist.common.startBackgroundListeners = function () {
           if (index != -1) {
             blocklists.splice(index, 1);
             chrome.storage.local.set({blocklist: blocklists}, function() {
+              blocklist.common.updateDynamicRules();
               sendResponse({
-                pattern: request.pattern
+                pattern: request.pattern,
+                success: 1
               });
             });
           } else {
             sendResponse({
-              pattern: request.pattern
+              pattern: request.pattern,
+              success: 0
             });
           }
         });
@@ -203,78 +208,55 @@ chrome.storage.local.get(['blocklist'], function(result) {
   });
 });
 
-//监听是否浏览黑名单
-chrome.webRequest.onBeforeRequest.addListener(
-  function(details) {
-    console.log('[RogueKiller] 开始处理请求:', details.url);
-    chrome.storage.local.get(['blocklist'], function(result) {
-      if (chrome.runtime.lastError) {
-        console.error('[RogueKiller] 获取黑名单失败:', chrome.runtime.lastError);
-        return;
-      }
-      console.log('[RogueKiller] 当前黑名单:', result.blocklist);
-      console.debug('[RogueKiller] 检查URL:', details.url, '对比黑名单:', result.blocklist);
-      
-      // 检查是否在黑名单中
-      if (result.blocklist && result.blocklist.some(pattern => {
-        try {
-          const urlObj = new URL(details.url);
-          const host = urlObj.hostname;
-          return host.includes(pattern) || details.url.includes(pattern);
-        } catch (e) {
-          return details.url.includes(pattern);
-        }
-      })) {
-        // 显示醒目通知并阻止页面加载
-        chrome.notifications.create({
-          type: 'basic',
-          title: '⚠️ 安全警告 ⚠️',
-          message: `检测到危险网站!\n网址: ${details.url}\n\n建议立即关闭此页面`,
-          iconUrl: '/images/icon.png',
-          priority: 2,
-          requireInteraction: true,
-          buttons: [{title: '了解风险'}]
-        }, function(notificationId) {
-          if (chrome.runtime.lastError) {
-            console.error('通知创建失败:', chrome.runtime.lastError);
-          }
-        });
-        return {cancel: true};
-      }
-      var url = blocklist.common.getHostNameFromUrl(details.url);
-      var arr = result.blocklist || [];
-      if (arr.includes(url)) {
-        var notifyOptions = {
-          type: 'basic',
-          title: '安全警告',
-          iconUrl: '/images/icon.png',
-          message: '您正在访问危险网站: '+url,
-          priority: 2,
-          requireInteraction: true
-        }
-        console.log('[RogueKiller] 检测到危险网站:', url);
-        console.debug('[RogueKiller] 通知参数:', notifyOptions);
-        chrome.notifications.create('notify_'+Date.now(), notifyOptions, function(notificationId) {
-          if (chrome.runtime.lastError) {
-            console.error('[RogueKiller] 通知创建失败 - 错误详情:', {
-              error: chrome.runtime.lastError,
-              url: url,
-              time: new Date().toISOString()
-            });
-          } else {
-            console.log('[RogueKiller] 通知创建成功 - 详情:', {
-              id: notificationId,
-              url: url,
-              time: new Date().toISOString()
-            });
-          }
-        });
-      }
+// 更新动态规则
+blocklist.common.updateDynamicRules = async function() {
+  console.log('[RogueKiller] 更新动态规则');
+  const result = await chrome.storage.local.get(['blocklist']);
+  const blocklists = result.blocklist || [];
+
+  const rules = blocklists.map((domain, index) => ({
+    id: index + 1,
+    priority: 1,
+    action: {
+      type: 'block'
+    },
+    condition: {
+      urlFilter: `||${domain}^`,
+      resourceTypes: ['main_frame']
+    }
+  }));
+
+  try {
+    // 获取当前所有规则ID
+    const currentRules = await chrome.declarativeNetRequest.getDynamicRules();
+    const currentRuleIds = currentRules.map(rule => rule.id);
+    
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: currentRuleIds, // 先移除所有现有规则
+      addRules: rules // 再添加新规则
     });
-    return {cancel: false};
-  },
-  {urls: ["<all_urls>"]},
-  ["blocking"]
-);
+    console.log('[RogueKiller] 动态规则更新成功', {
+      removed: currentRuleIds.length,
+      added: rules.length
+    });
+  } catch (error) {
+    console.error('[RogueKiller] 更新动态规则失败:', error);
+  }
+};
+
+// 初始化时更新规则
+chrome.storage.local.get(['blocklist'], function(result) {
+  if (!result.blocklist) {
+    chrome.storage.local.set({blocklist: []});
+  }
+  blocklist.common.updateDynamicRules();
+});
+
+// 黑名单变更时更新规则
+chrome.storage.onChanged.addListener(function(changes) {
+  if (changes.blocklist) {
+    blocklist.common.updateDynamicRules();
+  }
+});
 
 
