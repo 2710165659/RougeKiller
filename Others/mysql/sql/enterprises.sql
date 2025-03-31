@@ -1,0 +1,21 @@
+CREATE TABLE enterprises (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    social_credit_code VARCHAR(30) UNIQUE COMMENT '统一社会信用代码',
+    company_name VARCHAR(255) NOT NULL COMMENT '企业名称',
+    legal_representative VARCHAR(50) COMMENT '法定代表人',
+    establishment_date DATE COMMENT '成立日期',
+    approval_date DATE COMMENT '核准日期',
+    registration_status VARCHAR(20) COMMENT '登记状态',
+    registration_number VARCHAR(50) COMMENT '注册号',
+    company_type VARCHAR(50) COMMENT '类型',
+    registered_capital DECIMAL(15,2) COMMENT '注册资本',
+    registration_authority VARCHAR(100) COMMENT '登记机关',
+    address TEXT COMMENT '住所',
+    business_scope TEXT COMMENT '经营范围',
+    business_term_start DATE COMMENT '营业期限开始',
+    business_term_end DATE COMMENT '营业期限结束',
+    entity_id BIGINT UNSIGNED COMMENT '关联的ICP主体ID',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (entity_id) REFERENCES icp_entities(id)
+);
