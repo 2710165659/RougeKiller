@@ -375,11 +375,13 @@ blocklist.manager.clickPwsOptionCheckbox = function (val) {
   chrome.runtime.sendMessage({
     type: blocklist.common.CHANGE_PWS_OPTION_VAL,
     val: val
-  },
-    blocklist.manager.handlePwsOptionCheckboxResult);
-  
-  // 立即更新屏蔽规则
-  blocklist.common.updateDynamicRules();
+  }, (response) => {
+    blocklist.manager.handlePwsOptionCheckboxResult(response);
+    // 确保消息处理完成后再更新规则
+    chrome.storage.local.set({blocklist_pws_option: val}, () => {
+      blocklist.common.updateDynamicRules();
+    });
+  });
 };
 
 //发送改变的信号后，改变的结果要在这里赋给 blocklist.common.pws_option_val

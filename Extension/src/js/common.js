@@ -215,22 +215,11 @@ blocklist.common.updateDynamicRules = async function() {
   const blocklists = result.blocklist || [];
   const pwsOption = result.blocklist_pws_option || "off";
 
-//   当pwsOption为on时，不添加任何屏蔽规则
-  if (pwsOption === "on") {
-    console.log('[RogueKiller] pwsOption为on，禁用网站屏蔽功能');
-    const currentRules = await chrome.declarativeNetRequest.getDynamicRules();
-    const currentRuleIds = currentRules.map(rule => rule.id);
-    await chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: currentRuleIds
-    });
-    return;
-  }
-
   const rules = blocklists.map((domain, index) => ({
     id: index + 1,
     priority: 1,
     action: {
-      type: 'block'
+      type: pwsOption === "on" ? 'allow' : 'block'
     },
     condition: {
       urlFilter: `||${domain}^`,
@@ -249,7 +238,8 @@ blocklist.common.updateDynamicRules = async function() {
     });
     console.log('[RogueKiller] 动态规则更新成功', {
       removed: currentRuleIds.length,
-      added: rules.length
+      added: rules.length,
+      pwsOption: pwsOption
     });
   } catch (error) {
     console.error('[RogueKiller] 更新动态规则失败:', error);
