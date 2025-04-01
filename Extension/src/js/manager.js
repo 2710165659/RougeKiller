@@ -1,4 +1,5 @@
 blocklist.manager = {};
+console.log("manager.js执行");
 
 blocklist.manager.handleDeleteBlocklistResponse = function (response) {
   chrome.tabs.query({
@@ -345,6 +346,11 @@ blocklist.manager.createSettingButton = function () {
 
 
 //创建pws功能的模块，取调用查询 pws状态
+blocklist.manager.createTestNotificationButton = function() {
+  // 创建测试通知按钮的实现
+  // 可以留空或添加实际功能
+};
+
 blocklist.manager.createPwsOptionBox = function () {
   chrome.runtime.sendMessage({
     type: blocklist.common.GET_PWS_OPTION_VAL
@@ -371,6 +377,9 @@ blocklist.manager.clickPwsOptionCheckbox = function (val) {
     val: val
   },
     blocklist.manager.handlePwsOptionCheckboxResult);
+  
+  // 立即更新屏蔽规则
+  blocklist.common.updateDynamicRules();
 };
 
 //发送改变的信号后，改变的结果要在这里赋给 blocklist.common.pws_option_val
@@ -391,7 +400,6 @@ document.addEventListener('DOMContentLoaded', function () {
   blocklist.manager.createBackButton();//生成返回按钮
   blocklist.manager.createBackButton2();
   blocklist.manager.createSettingButton();
-  blocklist.manager.createTestNotificationButton(); //添加测试通知按钮
   blocklist.manager.createPwsOptionBox();//生成管理是否应用pws功能按钮
 });
 
