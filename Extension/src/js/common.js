@@ -215,7 +215,7 @@ blocklist.common.updateDynamicRules = async function() {
   const blocklists = result.blocklist || [];
   const pwsOption = result.blocklist_pws_option || "off";
 
-  // 当pwsOption为on时，不添加任何屏蔽规则
+//   当pwsOption为on时，不添加任何屏蔽规则
   if (pwsOption === "on") {
     console.log('[RogueKiller] pwsOption为on，禁用网站屏蔽功能');
     const currentRules = await chrome.declarativeNetRequest.getDynamicRules();
