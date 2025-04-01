@@ -1,3 +1,18 @@
+// 监听状态更新消息
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'UPDATE_STATUS_BAR') {
+    $('#io-desc').text(request.message).addClass('text-success').removeClass('text-danger');
+    setTimeout(() => $('#io-desc').text('').removeClass('text-success'), 3000);
+  }
+  return true;
+});
+
+function showSyncAlert(message) {
+  const alert = $('#sync-alert');
+  $('#sync-alert-message').text(message);
+  alert.fadeIn();
+  setTimeout(() => alert.fadeOut(), 3000);
+}
 blocklist.manager = {};
 console.log("manager.js执行");
 

@@ -152,11 +152,12 @@ blocklist.common.startBackgroundListeners = function () {
           })
           .then(urls => {
             console.log('从服务器获取的黑名单:', urls);
-            chrome.notifications.create({
-              type: 'basic',
-              iconUrl: chrome.runtime.getURL('images/icon.png'),
-              title: '黑名单同步成功',
-              message: `已同步${urls.length}条黑名单记录`
+            // 仅检查权限不发送通知
+            chrome.notifications.getPermissionLevel(level => {
+              console.log('当前通知权限级别:', level);
+              if (level !== 'granted') {
+                chrome.notifications.requestPermission();
+              }
             });
             
             chrome.storage.local.get(['blocklist'], function(result) {
@@ -183,11 +184,34 @@ blocklist.common.startBackgroundListeners = function () {
               let updatedList = [...blocklists, ...newDomains].sort();
               chrome.storage.local.set({blocklist: updatedList}, () => {
                 // 显示通知
-                chrome.notifications.create('sync-notification', {
-                  type: 'basic',
-                  iconUrl: chrome.runtime.getURL('images/icon.png'),
-                  title: '黑名单同步完成',
+                // 更新底部提示框
+                chrome.runtime.sendMessage({
+                  type: 'UPDATE_STATUS_BAR',
                   message: `新增${newDomains.length}条记录，共${updatedList.length}条`
+                });
+
+                // 显示系统通知
+                chrome.notifications.getPermissionLevel(level => {
+                  console.log('当前通知权限级别:', level);
+                  if (level === 'granted') {
+                    chrome.notifications.create({
+                      type: 'basic',
+                      iconUrl: chrome.runtime.getURL('images/icon.png'),
+                      title: '黑名单同步完成',
+                      message: `新增${newDomains.length}条记录，共${updatedList.length}条`,
+                      buttons: [{ title: '确定' }],
+                      requireInteraction: false
+                    }, notificationId => {
+                      if (chrome.runtime.lastError) {
+                        console.error('通知创建失败:', chrome.runtime.lastError);
+                      } else {
+                        console.log('通知创建成功，ID:', notificationId);
+                      }
+                    });
+                  } else {
+                    console.warn('通知权限未授予，当前级别:', level);
+                    chrome.notifications.requestPermission();
+                  }
                 });
                 
                 // 更新规则并响应
