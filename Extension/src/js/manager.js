@@ -38,53 +38,48 @@ blocklist.manager.handleAddBlocklistResponse = function (response) {
   })
 };
 
-//这就是黑名单
+//黑名单列表项
 blocklist.manager.createBlocklistPattern = function (pattern) {
   let patRow = $(
-    '<div style="max-width:350px;white-space: nowrap;display:flex;font-size:16px;margin:10px 0;padding:5px 0;border-bottom:1px solid #f2f2f2;"></div>');
-  let patRowDeleteButton = $('<div class="isBlocked" style="margin-right: 15px;"></div>');
-  let span = $('<span style="color:#1a0dab;margin:0;text-decoration:underline;cursor: pointer;">' +
-    chrome.i18n.getMessage('removeUrlFromBlocklist') +
-    '</span>');
+    `<div class="blocklist-item" style="display:flex;align-items:center;padding:8px 0;margin:0;border-radius:4px;transition:all 0.3s;">
+      <div class="delete-btn" style="width:80px;margin-right:20px;text-align:center;"></div>
+      <div class="url-text" style="flex:1;font-family:monospace;min-width:0;overflow:hidden;text-overflow:ellipsis;">${pattern}</div>
+    </div>`
+  );
+  
+  let deleteBtn = patRow.find('.delete-btn');
+  let urlText = patRow.find('.url-text');
+  
+  // 初始状态
+  deleteBtn.html('<span style="color:#dc3545;cursor:pointer;font-weight:500;padding:4px 12px;border-radius:4px;background:#ffebee;user-select:none;">删除</span>');
+  urlText.css('text-decoration', 'none');
 
-  patRowDeleteButton.append(span);
-  patRowDeleteButton.appendTo(patRow);
-
-  let patRowHostName = $(
-    '<div class="pattern-block">' + pattern + '</div>');
-  patRowHostName.appendTo(patRow);
-
-  patRowDeleteButton.on("click", function () {
-    let btn = $(this);
-
-    if (btn.hasClass("isBlocked")) {
+  deleteBtn.on("click", function() {
+    let isDeleted = urlText.css('text-decoration').includes('line-through');
+    
+    if (!isDeleted) {
+      // 删除操作
       chrome.runtime.sendMessage({
         type: blocklist.common.DELETE_FROM_BLOCKLIST,
         pattern: pattern
-      },
-        blocklist.manager.handleDeleteBlocklistResponse);
-
-      btn.removeClass("isBlocked");
-      span.html(
-        '<span style="color:#1a0dab;margin:0;text-decoration:underline;cursor: pointer;">' +
-        chrome.i18n.getMessage('blockThisUrl') +
-        '</span>');
-
+      }, function() {
+        deleteBtn.html('<span style="color:#28a745;cursor:pointer;font-weight:500;padding:4px 12px;border-radius:4px;background:#e8f5e9;user-select:none;">已删除</span>');
+        urlText.css('text-decoration', 'line-through');
+        urlText.css('color', '#6c757d');
+      });
     } else {
+      // 恢复操作
       chrome.runtime.sendMessage({
         type: blocklist.common.ADD_TO_BLOCKLIST,
         pattern: pattern
-      },
-        blocklist.manager.handleAddBlocklistResponse);
-
-      btn.addClass("isBlocked");
-      span.html(
-        '<span style="color:#1a0dab;margin:0;text-decoration:underline;cursor: pointer;">' +
-        chrome.i18n.getMessage('removeUrlFromBlocklist') +
-        '</span>');
-
+      }, function() {
+        deleteBtn.html('<span style="color:#dc3545;cursor:pointer;font-weight:500;padding:4px 8px;border-radius:4px;background:#ffebee;user-select:none;"> 删除 </span>');
+        urlText.css('text-decoration', 'none');
+        urlText.css('color', 'inherit');
+      });
     }
   });
+  
   return patRow;
 }
 
@@ -113,35 +108,34 @@ blocklist.manager.addBlockCurrentHostLink = function (blocklistPatterns) {
     currentWindow: true
   }, function (tabs) {
     let pattern = blocklist.common.getHostNameFromUrl(tabs[0].url);
-
-    if (blocklistPatterns.indexOf(pattern) == -1) {
-      $('#current-blocklink').html(
-/*         '<a href="#"> ' +
-        chrome.i18n.getMessage("addBlocklist", pattern) +
-        '</a>') */
-        '<button type="button" class="btn btn-outline-danger">'+'拉黑'+ pattern+ '</button>')
-        ;
-      $('#current-blocklink').click(function () {
-        blocklist.manager.hideCurrentHost(pattern);
-      });
-    } else {
-/*       alert("manager")
-      var notifyOptions = {
-        // type:basic,imge,simple,list
-        type: 'basic',
-        title: '提示',
-        iconUrl: '../images/icon.png',
-        message: '你正在预览危险网站！'
-    }
-    chrome.notifications.create('resetNotify',notifyOptions); */
-
-      $("#current-blocklink").html(
-/*         '<p style="background:#dff0d8;color:#3c763d;">' +
-        chrome.i18n.getMessage('completeBlocked', pattern) +
-        '</p>' */
-        '<button type="button" class="btn btn-outline-danger">'+'已拉黑'+ pattern+ '</button>'
+    let currentBlockLink = $('#current-blocklink');
+    
+    function updateButton(isBlocked) {
+      if (isBlocked) {
+        currentBlockLink.html(
+          '<button type="button" class="btn btn-danger">取消拉黑 '+ pattern + '</button>'
         );
-    };
+        currentBlockLink.off('click').click(function() {
+          chrome.runtime.sendMessage({
+            type: blocklist.common.DELETE_FROM_BLOCKLIST,
+            pattern: pattern
+          }, function() {
+            updateButton(false);
+            blocklist.manager.refresh();
+          });
+        });
+      } else {
+        currentBlockLink.html(
+          '<button type="button" class="btn btn-outline-danger">拉黑 '+ pattern + '</button>'
+        );
+        currentBlockLink.off('click').click(function() {
+          blocklist.manager.hideCurrentHost(pattern);
+          updateButton(true);
+        });
+      }
+    }
+
+    updateButton(blocklistPatterns.indexOf(pattern) !== -1);
   });
 }
 
@@ -352,19 +346,13 @@ blocklist.manager.createSettingButton = function () {
   $("#setting").text("一键同步")
   $("#setting").on("click", function () {
     chrome.runtime.sendMessage({
-      type: blocklist.common.UPDATE,
-    },
-    blocklist.manager.refresh());
+      type: blocklist.common.UPDATE
+    }, function() {
+      blocklist.manager.refresh();
+    });
   });
 }
 
-
-
-//创建pws功能的模块，取调用查询 pws状态
-blocklist.manager.createTestNotificationButton = function() {
-  // 创建测试通知按钮的实现
-  // 可以留空或添加实际功能
-};
 
 blocklist.manager.createPwsOptionBox = function () {
   chrome.runtime.sendMessage({
