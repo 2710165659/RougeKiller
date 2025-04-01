@@ -50,8 +50,8 @@
     },
     {
       "matches": ["<all_urls>"],
-      "run_at": "document_start",
-      "js": ["src/js/content_script.js"]
+      "run_at": "document_end",
+      "js": ["src/js/my_alert.js"]
     }
   ],
   "content_security_policy": {
