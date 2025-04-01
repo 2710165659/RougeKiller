@@ -55,6 +55,6 @@
     }
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' http://jsonplaceholder.typicode.com"
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' http://localhost:3000 http://jsonplaceholder.typicode.com"
   }
 }

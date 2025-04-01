@@ -141,28 +141,73 @@ blocklist.common.startBackgroundListeners = function () {
         });
         return true;
         /* 更新url模块 */
-      } else if(request.type == blocklist.common.UPDATE){
-        fetch("http://jsonplaceholder.typicode.com/posts")
-          .then(response => response.text())
-          .then(text => {
-            alert("已成功同步Rogue killer最新黑名单");
-            let regex = /(https?:\/\/)?(www[.])?([0-9a-zA-Z.-]+).*(\s)?/g;
-            let arr = [];
-            while ((m = regex.exec(text)) !== null) {
-              arr.push(m[3]);
+      } else if (request.type == blocklist.common.UPDATE) {
+          // TODO 同步请求url配置 同时需要在manifest.json最后修改一下url
+        fetch("http://localhost:3000/websites")
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
+            return response.json();
+          })
+          .then(urls => {
+            console.log('从服务器获取的黑名单:', urls);
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: chrome.runtime.getURL('images/icon.png'),
+              title: '黑名单同步成功',
+              message: `已同步${urls.length}条黑名单记录`
+            });
+            
             chrome.storage.local.get(['blocklist'], function(result) {
               let blocklists = result.blocklist || [];
-              for (let i = 0, length = arr.length; i < length; i++) {
-                if (blocklists.indexOf(arr[i]) == -1) {
-                  blocklists.push(arr[i]);
+              // 使用与导入黑名单相同的处理逻辑
+              let regex = /(https?:\/\/)?(www[.])?([0-9a-zA-Z.-]+).*(\r\n|\n)?/g;
+              let domains = [];
+              urls.forEach(url => {
+                let m;
+                while ((m = regex.exec(url)) !== null) {
+                  domains.push(m[3]);
+                }
+              });
+              
+              // 合并去重
+              let newDomains = [];
+              for (let i = 0, length = domains.length; i < length; i++) {
+                if (blocklists.indexOf(domains[i]) == -1) {
+                  newDomains.push(domains[i]);
                 }
               }
-              blocklists.sort();
-              chrome.storage.local.set({blocklist: blocklists});
+              
+              // 更新存储
+              let updatedList = [...blocklists, ...newDomains].sort();
+              chrome.storage.local.set({blocklist: updatedList}, () => {
+                // 显示通知
+                chrome.notifications.create('sync-notification', {
+                  type: 'basic',
+                  iconUrl: chrome.runtime.getURL('images/icon.png'),
+                  title: '黑名单同步完成',
+                  message: `新增${newDomains.length}条记录，共${updatedList.length}条`
+                });
+                
+                // 更新规则并响应
+                blocklist.common.updateDynamicRules().then(() => {
+                  sendResponse({success: true, count: newDomains.length});
+                });
+              });
             });
           })
-          .catch(error => console.error('Error:', error));
+          .catch(error => {
+            console.error('同步黑名单失败:', error);
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: '../images/icon.png',
+              title: '黑名单同步失败',
+              message: error.message
+            });
+            sendResponse({success: false, error: error.message});
+          });
+        return true;
       }
       else if (request.type == blocklist.common.FETCH) {
         (async () => {
@@ -215,17 +260,25 @@ blocklist.common.updateDynamicRules = async function() {
   const blocklists = result.blocklist || [];
   const pwsOption = result.blocklist_pws_option || "off";
 
-  const rules = blocklists.map((domain, index) => ({
-    id: index + 1,
-    priority: 1,
-    action: {
-      type: pwsOption === "on" ? 'allow' : 'block'
-    },
-    condition: {
-      urlFilter: `||${domain}^`,
-      resourceTypes: ['main_frame']
+  // 生成稳定的规则ID（使用域名hash）
+  const rules = blocklists.map(domain => {
+    let hash = 0;
+    for (let i = 0; i < domain.length; i++) {
+      hash = ((hash << 5) - hash) + domain.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
     }
-  }));
+    return {
+      id: Math.abs(hash) % 10000 + 1, // 确保ID在1-10000范围内
+      priority: 1,
+      action: {
+        type: pwsOption === "on" ? 'allow' : 'block'
+      },
+      condition: {
+        urlFilter: `||${domain}^`,
+        resourceTypes: ['main_frame']
+      }
+    };
+  });
 
   try {
     // 获取当前所有规则ID
