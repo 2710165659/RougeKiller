@@ -6,7 +6,7 @@ CREATE TABLE websites (
     port INT COMMENT '端口',
     title VARCHAR(255) COMMENT '网站标题',
     ip VARCHAR(45) COMMENT '服务器IP',
-    is_malicious BOOLEAN DEFAULT FALSE COMMENT '是否恶意下载站',
+    is_malicious BOOLEAN DEFAULT FALSE COMMENT '是否是恶意站点',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
