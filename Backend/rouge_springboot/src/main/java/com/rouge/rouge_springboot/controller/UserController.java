@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
         return ResponseEntity.ok(userService.getUserById(userId));
     }
 
