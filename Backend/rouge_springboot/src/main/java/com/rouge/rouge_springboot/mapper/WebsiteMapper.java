@@ -22,7 +22,7 @@ public interface WebsiteMapper extends BaseMapper<Website> {
      */
     @Select("<script>" +
             "SELECT " +
-            "   w.title, w.full_url, w.ip, w.port, w.is_malicious, " +
+            "   w.title, w.full_url AS url, w.ip, w.port, w.is_malicious, " +
             "   e.entity_name AS company, s.service_code ,s.created_at " +
             "FROM websites w " +
             "JOIN icp_services s ON s.website_id = w.id " +
@@ -34,20 +34,5 @@ public interface WebsiteMapper extends BaseMapper<Website> {
             "</where>" +
             "</script>")
     IPage<WebsiteDetailDTO> selectByCondition(IPage<Website> page, @Param("query") WebsiteQueryDTO query);
-    // @Select("SELECT \n" +
-    //         "\t\twebsites.title, \n" +
-    //         "    websites.full_url, \n" +
-    //         "    websites.ip, \n" +
-    //         "    websites.`port`,\n" +
-    //         "    websites.is_malicious, \n" +
-    //         "    icp_entities.entity_name,\n" +
-    //         "\t\ticp_services.service_code,\n" +
-    //         "\t\ticp_services.created_at\n" +
-    //         "\t\t\n" +
-    //         "FROM websites\n" +
-    //         "JOIN icp_services ON icp_services.website_id = websites.id\n" +
-    //         "JOIN icp_entities ON icp_services.entity_id = icp_entities.id"
-    // )
-    // Page<WebsiteDetailDTO> searchWebsite(@Param("queryWrapper") WebsiteQueryDTO queryDTO);
 
 }

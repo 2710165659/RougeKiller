@@ -30,12 +30,15 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website>  imp
         // 2. 调用Mapper方法，MP会自动处理分页逻辑
         IPage<WebsiteDetailDTO> resultPage = baseMapper.selectByCondition(page, queryDTO);
 
-        // 3.构建返回结果
+        // 构建返回结果
         WebsiteDTO websiteDTO = new WebsiteDTO();
         websiteDTO.setPageNum(queryDTO.getPageNum());
         websiteDTO.setPageSize(queryDTO.getPageSize());
         websiteDTO.setTotal(resultPage.getTotal());
         websiteDTO.setData(resultPage.getRecords());
+        // 统计不同网站数量
+        websiteDTO.setNormalCount((int) websiteDTO.getData().stream().filter(dto-> dto.getIsMalicious() != null && !dto.getIsMalicious()).count());
+        websiteDTO.setMaliciousCount((int) (websiteDTO.getTotal() - websiteDTO.getNormalCount()));
 
         return websiteDTO;
     }
