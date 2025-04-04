@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axios from 'axios' // 使用默认的axios实例
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(credentials) {
       try {
-        const response = await axios.post('/auth/login', credentials)
+        const response = await axios.post('/api/auth/login', credentials)
         this.setAuth(response.data)
         return response
       } catch (error) {
@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
 
     async register(userData) {
       try {
-        const response = await axios.post('/auth/register', userData)
+        const response = await axios.post('/api/auth/register', userData)
         return response
       } catch (error) {
         throw error
