@@ -1,10 +1,27 @@
 <template>
   <div class="app-container">
-    <div class="sidebar">
-      <h2>导航区</h2>
-    </div>
-    <div class="main-content">
-      <router-view />
-    </div>
+    <custom-menu class="sidebar" />
+    <router-view class="main-content" />
   </div>
 </template>
+
+<script setup>
+import CustomMenu from '@/components/CustomMenu.vue'
+
+</script>
+
+<style scoped>
+.app-container {
+  height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.main-content {
+  flex: 5;
+  background-color: #444C54;
+}
+</style>
