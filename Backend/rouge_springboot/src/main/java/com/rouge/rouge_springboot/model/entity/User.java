@@ -1,4 +1,4 @@
-package com.rouge.rouge_springboot.model;
+package com.rouge.rouge_springboot.model.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -8,18 +8,18 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("icp_entities")
-public class IcpEntity {
+@TableName("users")
+public class User {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    private String icpCode;
+    private String name;
 
-    private java.sql.Date approvalDate;
+    private String email;
 
-    private String entityName;
+    private String saltedPassword;
 
-    private String entityType;
+    private String role;
 
     @TableField(fill = FieldFill.INSERT)
     private java.sql.Timestamp createdAt;

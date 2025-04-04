@@ -1,4 +1,4 @@
-package com.rouge.rouge_springboot.model;
+package com.rouge.rouge_springboot.model.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

@@ -1,7 +1,7 @@
 package com.rouge.rouge_springboot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rouge.rouge_springboot.model.Enterprise;
+import com.rouge.rouge_springboot.model.entity.Enterprise;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

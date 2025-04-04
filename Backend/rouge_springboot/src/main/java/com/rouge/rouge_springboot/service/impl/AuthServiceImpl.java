@@ -1,7 +1,7 @@
 package com.rouge.rouge_springboot.service.impl;
 
 import com.rouge.rouge_springboot.mapper.UserMapper;
-import com.rouge.rouge_springboot.model.User;
+import com.rouge.rouge_springboot.model.entity.User;
 import com.rouge.rouge_springboot.service.AuthService;
 import com.rouge.rouge_springboot.util.PasswordUtil;
 import com.rouge.rouge_springboot.util.TokenUtil;
