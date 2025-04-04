@@ -68,16 +68,15 @@ const activeIndex = computed(() => {
 
 <style scoped>
 .container {
-  height: 100%;
+  min-height: 100vh;
   background-color: #32393A;
-  padding: 20px;
   user-select: none;
 }
 
 img {
   display: block;
   width: 50%;
-  margin: 0 auto;
+  margin: 20px auto;
   transition: transform 0.3s ease;
   user-select: none;
 }
