@@ -9,7 +9,21 @@ const routes = [
     component: DefaultLayout,
     meta: { requiresAuth: true },
     children: [
-      { path: '', component: () => import('@/views/Home.vue') }
+      { path: '', component: () => import('@/views/Home.vue') },
+      {
+        path: 'websites',
+        children: [
+          { path: 'show', component: () => import('@/views/websites/Show.vue') },
+          { path: 'diagram', component: () => import('@/views/websites/Diagram.vue') },
+        ]
+      },
+      {
+        path: 'review',
+        children: [
+          { path: 'detect', component: () => import('@/views/review/Detect.vue') },
+          { path: 'task', component: () => import('@/views/review/Task.vue') },
+        ]
+      }
 
     ]
   },
