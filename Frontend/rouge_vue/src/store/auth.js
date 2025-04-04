@@ -3,7 +3,6 @@ import axios from 'axios' // 使用默认的axios实例
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null,
     token: null,
     isAuthenticated: false
   }),
@@ -29,15 +28,13 @@ export const useAuthStore = defineStore('auth', {
     },
 
     setAuth(authData) {
-      this.user = authData.user
-      this.token = authData.token
+      this.token = authData
       this.isAuthenticated = true
       // 存储到localStorage
       localStorage.setItem('auth', JSON.stringify(authData))
     },
 
     clearAuth() {
-      this.user = null
       this.token = null
       this.isAuthenticated = false
       localStorage.removeItem('auth')

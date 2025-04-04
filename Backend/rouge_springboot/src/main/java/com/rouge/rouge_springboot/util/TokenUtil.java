@@ -1,5 +1,8 @@
 package com.rouge.rouge_springboot.util;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
 import javax.crypto.SecretKey;
@@ -16,4 +19,32 @@ public class TokenUtil {
                 .signWith(SECRET_KEY)
                 .compact();
     }
+
+
+    public static String getUserIdFromToken(String token) {
+        try {
+            Jws<Claims> jws = Jwts.parser()
+                    .verifyWith(SECRET_KEY)
+                    .build()
+                    .parseSignedClaims(token);
+
+            return jws.getPayload().getSubject();
+        } catch (JwtException e) {
+            // 处理无效令牌的情况
+            throw new RuntimeException("Invalid or expired token", e);
+        }
+    }
+
+    public static Boolean verifyToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(SECRET_KEY)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
+    }
+
 }

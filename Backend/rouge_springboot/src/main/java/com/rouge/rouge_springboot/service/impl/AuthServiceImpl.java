@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,21 +26,9 @@ public class AuthServiceImpl implements AuthService {
         if (!PasswordUtil.checkPassword(password, user.getSaltedPassword())){
             return new ResponseEntity<String>("密码错误", HttpStatus.UNAUTHORIZED);
         }
-        // 返回用户信息和token
+        // 返回token
         String token = TokenUtil.generateToken(user.getId());
-
-        Map<String,Object> returnUser = new HashMap<>();
-        returnUser.put("name",user.getName());
-        returnUser.put("email",user.getEmail());
-        returnUser.put("role",user.getRole());
-        returnUser.put("createdAt",user.getCreatedAt());
-        returnUser.put("updatedAt",user.getUpdatedAt());
-
-        Map<String,Object> data = new HashMap<>();
-        data.put("token",token);
-        data.put("user",returnUser);
-
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(token);
     }
 
     @Override
