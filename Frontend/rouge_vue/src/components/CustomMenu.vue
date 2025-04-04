@@ -10,19 +10,19 @@
       <el-sub-menu index="websites">
         <template #title>
           <el-icon class="icon">
-            <DataAnalysis />
+            <Monitor />
           </el-icon>
           <span>网站分析系统</span>
         </template>
         <el-menu-item index="/websites/show">
           <el-icon class="icon">
-            <DataBoard />
+            <PieChart />
           </el-icon>
           <span>网站情报总览</span>
         </el-menu-item>
         <el-menu-item index="/websites/diagram">
           <el-icon class="icon">
-            <Document />
+            <Histogram />
           </el-icon>
           <span>网站画像</span>
         </el-menu-item>
@@ -31,21 +31,70 @@
       <el-sub-menu index="review">
         <template #title>
           <el-icon class="icon">
-            <DataAnalysis />
+            <AlarmClock />
           </el-icon>
           <span>实时审查系统</span>
         </template>
         <el-menu-item index="/review/detect">
           <el-icon class="icon">
-            <DataBoard />
+            <VideoPlay />
           </el-icon>
           <span>实时监测</span>
         </el-menu-item>
         <el-menu-item index="/review/task">
           <el-icon class="icon">
-            <Document />
+            <Setting />
           </el-icon>
           <span>检测任务配置</span>
+        </el-menu-item>
+      </el-sub-menu>
+
+      <el-sub-menu index="trace">
+        <template #title>
+          <el-icon class="icon">
+            <Connection />
+          </el-icon>
+          <span>追踪溯源系统</span>
+        </template>
+        <el-menu-item index="/trace/homology">
+          <el-icon class="icon">
+            <Link />
+          </el-icon>
+          <span>同源性分析</span>
+        </el-menu-item>
+        <el-menu-item index="/trace/person">
+          <el-icon class="icon">
+            <User />
+          </el-icon>
+          <span>人员追踪</span>
+        </el-menu-item>
+      </el-sub-menu>
+
+      <el-menu-item index="/qa">
+        <el-icon class="icon">
+          <ChatDotRound />
+        </el-icon>
+        <span>在线问答</span>
+      </el-menu-item>
+
+      <el-sub-menu index="system">
+        <template #title>
+          <el-icon class="icon">
+            <Setting />
+          </el-icon>
+          <span>系统管理</span>
+        </template>
+        <el-menu-item index="/system/users">
+          <el-icon class="icon">
+            <UserFilled />
+          </el-icon>
+          <span>用户管理</span>
+        </el-menu-item>
+        <el-menu-item index="/system/extension">
+          <el-icon class="icon">
+            <ChromeFilled />
+          </el-icon>
+          <span>浏览器插件</span>
         </el-menu-item>
       </el-sub-menu>
 
@@ -55,7 +104,7 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
-import { DataAnalysis, DataBoard, Document } from '@element-plus/icons-vue/dist'
+import { Monitor, PieChart, Histogram, AlarmClock, VideoPlay, Connection, Link, User, ChatDotRound, Setting, UserFilled, ChromeFilled } from '@element-plus/icons-vue/dist'
 import { computed } from 'vue'
 
 const route = useRoute()
@@ -75,7 +124,7 @@ const activeIndex = computed(() => {
 
 img {
   display: block;
-  width: 50%;
+  width: 30%;
   margin: 20px auto;
   transition: transform 0.3s ease;
   user-select: none;
@@ -88,7 +137,7 @@ img:hover {
 h1 {
   text-align: center;
   color: white;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-weight: 300;
   letter-spacing: 1px;
 }

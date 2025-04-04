@@ -22,6 +22,5 @@ import CustomMenu from '@/components/CustomMenu.vue'
 
 .main-content {
   flex: 5;
-  background-color: #444C54;
 }
 </style>

@@ -23,6 +23,24 @@ const routes = [
           { path: 'detect', component: () => import('@/views/review/Detect.vue') },
           { path: 'task', component: () => import('@/views/review/Task.vue') },
         ]
+      },
+      {
+        path: 'trace',
+        children: [
+          { path: 'homology', component: () => import('@/views/trace/Homology.vue') },
+          { path: 'person', component: () => import('@/views/trace/Person.vue') }
+        ]
+      },
+      {
+        path: 'qa',
+        component: () => import('@/views/qa/Index.vue')
+      },
+      {
+        path: 'system',
+        children: [
+          { path: 'users', component: () => import('@/views/system/Users.vue') },
+          { path: 'extension', component: () => import('@/views/system/Extension.vue') }
+        ]
       }
 
     ]
