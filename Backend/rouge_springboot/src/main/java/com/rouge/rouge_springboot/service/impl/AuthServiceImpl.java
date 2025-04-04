@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
@@ -17,7 +20,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public ResponseEntity<String> login(String email, String password) {
+    public ResponseEntity<?> login(String email, String password) {
         User user = userMapper.selectByUserEmail(email);
         if (user == null){
             return new ResponseEntity<String>("用户不存在", HttpStatus.UNAUTHORIZED);
@@ -25,12 +28,25 @@ public class AuthServiceImpl implements AuthService {
         if (!PasswordUtil.checkPassword(password, user.getSaltedPassword())){
             return new ResponseEntity<String>("密码错误", HttpStatus.UNAUTHORIZED);
         }
-        // 生成token并返回
-        return ResponseEntity.ok(TokenUtil.generateToken(user.getId()));
+        // 返回用户信息和token
+        String token = TokenUtil.generateToken(user.getId());
+
+        Map<String,Object> returnUser = new HashMap<>();
+        returnUser.put("name",user.getName());
+        returnUser.put("email",user.getEmail());
+        returnUser.put("role",user.getRole());
+        returnUser.put("createdAt",user.getCreatedAt());
+        returnUser.put("updatedAt",user.getUpdatedAt());
+
+        Map<String,Object> data = new HashMap<>();
+        data.put("token",token);
+        data.put("user",returnUser);
+
+        return ResponseEntity.ok(data);
     }
 
     @Override
-    public ResponseEntity<String> register(String email, String password) {
+    public ResponseEntity<?> register(String email, String password) {
         if (userMapper.selectByUserEmail(email) != null){
             return new ResponseEntity<String>("用户已存在", HttpStatus.CONFLICT);
         }

@@ -15,8 +15,8 @@ public class TestController {
      * @return 200，body里放数据
      */
     @GetMapping("/ok")
-    public ResponseEntity<String> test() {
-        // 返回json形式数据
+    public ResponseEntity<?> test() {
+        // 返回数据
         return ResponseEntity.ok("test");
     }
 
@@ -25,7 +25,7 @@ public class TestController {
      * @return 错误码400，body里放错误信息
      */
     @GetMapping("/error1")
-    public ResponseEntity<String> testError1() {
+    public ResponseEntity<?> testError1() {
         return new ResponseEntity<>("test error", HttpStatus.NOT_FOUND);
     }
 
@@ -34,7 +34,7 @@ public class TestController {
      * @return 错误码500，body里放错误信息
      */
     @GetMapping("/error2")
-    public ResponseEntity<String> testError2() {
+    public ResponseEntity<?> testError2() {
         throw new RuntimeException("test error");
     }
 }

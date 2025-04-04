@@ -5,6 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface AuthService {
-    ResponseEntity<String> login(String email, String password);
-    ResponseEntity<String> register(String email, String password);
+    ResponseEntity<?> login(String email, String password);
+    ResponseEntity<?> register(String email, String password);
 }

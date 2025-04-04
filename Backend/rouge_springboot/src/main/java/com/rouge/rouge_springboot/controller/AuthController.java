@@ -17,7 +17,7 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, Object> loginInfo){
+    public ResponseEntity<?> login(@RequestBody Map<String, Object> loginInfo){
         try {
             String email = (String) loginInfo.get("email");
             String password = (String) loginInfo.get("password");
@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Map<String, Object> registerInfo){
+    public ResponseEntity<?> register(@RequestBody Map<String, Object> registerInfo){
         try {
             String email = (String) registerInfo.get("email");
             String password = (String) registerInfo.get("password");

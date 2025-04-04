@@ -34,8 +34,6 @@ export const useAuthStore = defineStore('auth', {
       this.isAuthenticated = true
       // 存储到localStorage
       localStorage.setItem('auth', JSON.stringify(authData))
-      // 设置axios默认授权头
-      axios.defaults.headers.common['Authorization'] = `Bearer ${authData.token}`
     },
 
     clearAuth() {
