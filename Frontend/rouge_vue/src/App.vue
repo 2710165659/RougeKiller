@@ -2,8 +2,15 @@
   <router-view></router-view>
 </template>
 
-<script>
+<script setup>
+import { useAuthStore } from './store/auth'
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  // 恢复登录状态
+  const authStore = useAuthStore()
+  authStore.initializeAuth()
+})
 </script>
 
 <style>
