@@ -1,6 +1,7 @@
 package com.rouge.rouge_springboot.util;
 
 import io.jsonwebtoken.Jwts;
+
 import javax.crypto.SecretKey;
 import java.util.Date;
 
