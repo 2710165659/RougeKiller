@@ -33,8 +33,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/websites"
         );
 
-        // registry.addInterceptor(tokenInterceptor)
-        //         .addPathPatterns("/**")
-        //         .excludePathPatterns(excludePaths);
+         registry.addInterceptor(tokenInterceptor)
+                 .addPathPatterns("/**")
+                 .excludePathPatterns(excludePaths);
     }
 }
