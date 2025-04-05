@@ -17,10 +17,12 @@ import CustomMenu from '@/components/CustomMenu.vue'
 }
 
 .sidebar {
+  position: fixed;
   flex: 1;
 }
 
 .main-content {
+  margin-left: 17vw;
   flex: 5;
 }
 </style>

@@ -117,9 +117,10 @@ const activeIndex = computed(() => {
 
 <style scoped>
 .container {
-  min-height: 100vh;
+  height: 100vh;
   background-color: #32393A;
   user-select: none;
+  overflow-y: auto;
 }
 
 img {
@@ -157,5 +158,23 @@ h1 {
 .menu :deep(.el-sub-menu__title:hover),
 .menu .el-menu-item:hover {
   background-color: #8C9B9D;
+}
+
+/* 美化滚动条 */
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #2c3333;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #5a6a6a;
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: #6d7f7f;
 }
 </style>
