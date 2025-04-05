@@ -14,6 +14,7 @@
 
 <script setup>
 import { useUserStore } from '@/store/user'
+import { ElMessage } from 'element-plus'
 import { onBeforeMount, computed } from 'vue'
 
 const userStore = useUserStore()
@@ -22,7 +23,9 @@ const userStore = useUserStore()
 const user = computed(() => userStore.user)
 
 onBeforeMount(() => {
-  userStore.fetchUser()
+  userStore.fetchUser().catch(error => {
+    ElMessage.error(error.message)
+  })
 })
 </script>
 

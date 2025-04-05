@@ -28,6 +28,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     setAuth(authData) {
+      console.log(authData)
       this.token = authData
       this.isAuthenticated = true
       // 存储到localStorage
@@ -45,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
       // 从localStorage初始化状态
       const authData = JSON.parse(localStorage.getItem('auth'))
       if (authData && authData.token) {
-        this.setAuth(authData)
+        this.authData = authData
       }
     }
   },

@@ -23,7 +23,6 @@ export const useUserStore = defineStore("user", {
         this.user = response.data
         this.loading = false
       } catch (error) {
-        // console.log(error)
         return error
       }
     }
