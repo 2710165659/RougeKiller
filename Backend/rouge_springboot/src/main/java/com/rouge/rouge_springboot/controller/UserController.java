@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -21,14 +23,14 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUserInfo(@RequestBody User user, HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        return userService.updateUserById(userId, user);
+    public ResponseEntity<?> updateUserInfo(@RequestBody Map<String,String> userInfo, HttpServletRequest request) {
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        return userService.updateUserById(userId, userInfo);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
         return userService.deleteUserById(userId);
     }
 }

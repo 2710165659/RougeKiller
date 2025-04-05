@@ -18,13 +18,22 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     async fetchUser() {
+      this.loading = true
       try {
         const response = await http.get("/user/info")
         this.user = response.data
+      } finally {
         this.loading = false
-      } catch (error) {
-        return error
       }
+    },
+
+    async updateUser(user) {
+      await http.put("/user/update", user)
+      await this.fetchUser()
+    },
+
+    async deleteUser() {
+      await http.delete("/user/delete")
     }
   }
 })
