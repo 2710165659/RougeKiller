@@ -31,7 +31,7 @@ public interface WebsiteMapper extends BaseMapper<Website> {
             "   <if test='query.url != null'> AND w.full_url LIKE CONCAT('%', #{query.url}, '%') </if>" +
             "   <if test='query.ip != null'> AND w.ip = #{query.ip} </if>" +
             "   <if test='query.company != null'> AND e.entity_name LIKE CONCAT('%', #{query.company}, '%') </if>" +
-            "</where>" + " order by w.id " +
+            "</where>" + " ORDER BY w.created_at DESC " +
             "</script>")
     IPage<WebsiteDetailDTO> selectByCondition(IPage<Website> page, @Param("query") WebsiteQueryDTO query);
 
