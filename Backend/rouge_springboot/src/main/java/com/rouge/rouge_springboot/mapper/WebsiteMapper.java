@@ -22,7 +22,7 @@ public interface WebsiteMapper extends BaseMapper<Website> {
      */
     @Select("<script>" +
             "SELECT " +
-            "   w.title, w.full_url AS url, w.ip, w.port, w.is_malicious, " +
+            "   w.title, w.full_url AS url, w.ip, w.port, w.is_malicious, w.id," +
             "   e.entity_name AS company, s.service_code ,s.created_at " +
             "FROM websites w " +
             "JOIN icp_services s ON s.website_id = w.id " +
@@ -31,7 +31,7 @@ public interface WebsiteMapper extends BaseMapper<Website> {
             "   <if test='query.url != null'> AND w.full_url LIKE CONCAT('%', #{query.url}, '%') </if>" +
             "   <if test='query.ip != null'> AND w.ip = #{query.ip} </if>" +
             "   <if test='query.company != null'> AND e.entity_name LIKE CONCAT('%', #{query.company}, '%') </if>" +
-            "</where>" +
+            "</where>" + " order by w.id " +
             "</script>")
     IPage<WebsiteDetailDTO> selectByCondition(IPage<Website> page, @Param("query") WebsiteQueryDTO query);
 

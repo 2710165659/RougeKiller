@@ -6,6 +6,7 @@ import java.sql.Date;
 
 @Data
 public class WebsiteDetailDTO {
+    private String id;
     private String title; //网站标题
     private String url; //网站url
     private String ip;; //服务器IP
