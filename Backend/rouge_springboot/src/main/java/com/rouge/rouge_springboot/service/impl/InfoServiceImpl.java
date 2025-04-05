@@ -1,6 +1,7 @@
 package com.rouge.rouge_springboot.service.impl;
 
 import com.rouge.rouge_springboot.mapper.InfoMapper;
+import com.rouge.rouge_springboot.model.dto.AreaWebsiteInfoDTO;
 import com.rouge.rouge_springboot.model.dto.BaseInfoDTO;
 import com.rouge.rouge_springboot.model.dto.OtherInfoDTO;
 import com.rouge.rouge_springboot.model.dto.YearlyWebsiteInfoDTO;
@@ -32,6 +33,7 @@ public class InfoServiceImpl implements InfoService {
     public OtherInfoDTO getOtherInfo() {
         Map<String, Object> counts = infoMapper.getOtherInfoCounts();
         List<Map<String, Object>> yearlyData = infoMapper.getWebsiteCountsByYear();
+        List<Map<String, Object>> areaData = infoMapper.getWebsiteCountsByProvince();
 
         OtherInfoDTO dto = new OtherInfoDTO();
         dto.setNormalWebsiteCount(((Number) counts.get("normalWebsiteCount")).intValue());
@@ -47,8 +49,16 @@ public class InfoServiceImpl implements InfoService {
             yearlyDto.setMaliciousWebsiteCount(((Number) data.get("maliciousWebsiteCount")).intValue());
             return yearlyDto;
         }).collect(Collectors.toList());
-
         dto.setYearlyWebsiteInfo(yearlyInfo);
+
+        List<AreaWebsiteInfoDTO> areaInfo = areaData.stream().map(data -> {
+            AreaWebsiteInfoDTO areaDto = new AreaWebsiteInfoDTO();
+            areaDto.setProvinceName((String) data.get("province_name"));
+            areaDto.setNormalCount(((Number) data.get("normal_count")).intValue());
+            areaDto.setMaliciousCount(((Number) data.get("malicious_count")).intValue());
+            return areaDto;
+        }).collect(Collectors.toList());
+        dto.setAreaWebsiteInfo(areaInfo);
         return dto;
     }
 }

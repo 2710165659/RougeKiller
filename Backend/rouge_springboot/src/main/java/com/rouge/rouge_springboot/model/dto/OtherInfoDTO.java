@@ -11,4 +11,5 @@ public class OtherInfoDTO {
     private Integer maliciousWebsiteCount;
     private Integer maliciousIpCount;
     private List<YearlyWebsiteInfoDTO> yearlyWebsiteInfo;
+    private List<AreaWebsiteInfoDTO> areaWebsiteInfo;
 }
