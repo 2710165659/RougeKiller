@@ -1,5 +1,6 @@
 package com.rouge.rouge_springboot.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,6 +13,9 @@ import com.rouge.rouge_springboot.model.entity.Website;
 import com.rouge.rouge_springboot.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 网站信息服务实现类
@@ -41,5 +45,12 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website>  imp
         websiteDTO.setMaliciousCount((int) (websiteDTO.getTotal() - websiteDTO.getNormalCount()));
 
         return websiteDTO;
+    }
+
+    @Override
+    public List<String> getMaliciousWebsiteUrls() {
+        LambdaQueryWrapper<Website> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Website::getIsMalicious, true).select(Website::getFullUrl);
+        return websiteMapper.selectObjs(queryWrapper).stream().map(obj -> (String) obj).collect(Collectors.toList());
     }
 }

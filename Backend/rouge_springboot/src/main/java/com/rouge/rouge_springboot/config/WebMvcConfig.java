@@ -29,7 +29,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 排除不需要拦截的路径
         List<String> excludePaths = Arrays.asList(
                 "/auth/login",
-                "/auth/register"
+                "/auth/register",
+                "/websites"
         );
 
         registry.addInterceptor(tokenInterceptor)

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 /**
  * 网站信息控制器
@@ -26,5 +28,13 @@ public class WebsiteController {
     @GetMapping("/search")
     public ResponseEntity<WebsiteDTO> searchWebsites(WebsiteQueryDTO queryDTO) {
         return ResponseEntity.ok(websiteService.searchWebsites(queryDTO));
+    }
+    /**
+     * 获取所有黑名单url
+     * @return 黑名单url列表
+     */
+    @GetMapping
+    public ResponseEntity<List<String>> getMaliciousWebsiteUrls() {
+        return ResponseEntity.ok(websiteService.getMaliciousWebsiteUrls());
     }
 }
