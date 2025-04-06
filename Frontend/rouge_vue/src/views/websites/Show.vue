@@ -1,20 +1,22 @@
 <template>
-  <div class="loading" v-loading="websitesShowStore.loading"></div>
-  <div v-if="!websitesShowStore.loading" class="container">
-    <div class="row">
-      <show-number class="row-item" title="网站数量" :num="websitesShowStore.websiteNum" color="red" :icon="Monitor" />
-      <show-number class="row-item" title="IP数量" :num="websitesShowStore.ipNum" color="#8334F0" :icon="Connection" />
-      <show-number class="row-item" title="公司数量" :num="websitesShowStore.companyNum" color="#EFB111"
-        :icon="OfficeBuilding" />
-      <show-number class="row-item" title="人员数量" :num="websitesShowStore.personNum" color="green" :icon="User" />
-    </div>
-    <div class="row">
-      <line-chart class="line-chart" :websiteTrend="websitesShowStore.websiteTrend" />
-      <rates-charts class="rates-charts" :rates="websitesShowStore.rates" />
-    </div>
-    <div class="row">
-      <bar-chart class="bar-chart" :webArea="websitesShowStore.webArea" />
-      <map-chart class="map-chart" :webArea="websitesShowStore.webArea" />
+  <div class="wrapper">
+    <div class="loading" v-loading="websitesShowStore.loading"></div>
+    <div v-show="!websitesShowStore.loading" class="container">
+      <div class="row">
+        <show-number class="row-item" title="网站数量" :num="websitesShowStore.websiteNum" color="red" :icon="Monitor" />
+        <show-number class="row-item" title="IP数量" :num="websitesShowStore.ipNum" color="#8334F0" :icon="Connection" />
+        <show-number class="row-item" title="公司数量" :num="websitesShowStore.companyNum" color="#EFB111"
+          :icon="OfficeBuilding" />
+        <show-number class="row-item" title="人员数量" :num="websitesShowStore.personNum" color="green" :icon="User" />
+      </div>
+      <div class="row">
+        <line-chart class="line-chart" :websiteTrend="websitesShowStore.websiteTrend" />
+        <rates-charts class="rates-charts" :rates="websitesShowStore.rates" />
+      </div>
+      <div class="row">
+        <bar-chart class="bar-chart" :webArea="websitesShowStore.webArea" />
+        <map-chart class="map-chart" :webArea="websitesShowStore.webArea" />
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +37,7 @@ const websitesShowStore = useWebsitesShowStore()
 onBeforeMount(async () => {
   try {
     await websitesShowStore.getData()
+    window.dispatchEvent(new Event('resize'));
   } catch (error) {
     ElMessage.error(error.response?.data || error.message)
   }
@@ -45,8 +48,12 @@ onBeforeMount(async () => {
 .loading {
   position: absolute;
   top: 50%;
-  margin-left: 20%;
   width: 80%;
+}
+
+.wrapper {
+  height: calc(100vh - 20px);
+  overflow-y: auto;
 }
 
 .container {
@@ -55,8 +62,6 @@ onBeforeMount(async () => {
   flex-direction: column;
   align-items: start;
   gap: 20px;
-  height: calc(100vh-20px);
-  overflow: auto;
 }
 
 .row {
@@ -105,22 +110,22 @@ onBeforeMount(async () => {
 
 
 /* 滚动条样式 */
-.container::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.container::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.container::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.container::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 </style>

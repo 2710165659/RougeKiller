@@ -13,17 +13,15 @@ export const useWebsitesShowStore = defineStore("websitesShow", {
       // 第二行信息
       websiteTrend: {
         years: [2017, 2018, 2019, 2020, 2021, 2022, 2023],
-        totalWebNum: [1000, 2000, 3000, 4000, 5000, 6000, 7000],
-        maliciousWebNum: [200, 400, 600, 800, 1000, 1200, 959],
-        normalWebNum: [800, 1600, 2400, 3200, 4000, 4800, 3499],
-        maliciousIpNum: [100, 200, 300, 400, 450, 500, 506],
-        normalIpNum: [400, 800, 1200, 1600, 1650, 1700, 1701]
+        total: [1000, 1800, 2800, 3500, 4500, 5800, 6499],
+        normal: [800, 1600, 2400, 3200, 4000, 4800, 3499],
+        malicious: [100, 200, 300, 400, 450, 500, 506]
       },
       rates: {
         maliciousWebNum: 959,
         normalWebNum: 3499,
         maliciousIpNum: 506,
-        normalIpNum: 1701,
+        normalIpNum: 1701
       },
       // 第三行信息
       webArea: {
@@ -49,123 +47,24 @@ export const useWebsitesShowStore = defineStore("websitesShow", {
       this.personNum = data.personCount
     },
     loadOtherInfo(data) {
-      // {
-      //   "normalWebsiteCount": 49,
-      //     "normalIpCount": 35,
-      //       "maliciousWebsiteCount": 21,
-      //         "maliciousIpCount": 15,
-      //           "yearlyWebsiteInfo": [
-      //             {
-      //               "year": 2025,
-      //               "totalWebsiteCount": 70,
-      //               "normalWebsiteCount": 49,
-      //               "maliciousWebsiteCount": 21
-      //             }
-      //           ],
-      //             "areaWebsiteInfo": [
-      //               {
-      //                 "provinceName": "上海",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 2
-      //               },
-      //               {
-      //                 "provinceName": "广东",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 2
-      //               },
-      //               {
-      //                 "provinceName": "江苏",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 2
-      //               },
-      //               {
-      //                 "provinceName": "山东",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 2
-      //               },
-      //               {
-      //                 "provinceName": "湖北",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 2
-      //               },
-      //               {
-      //                 "provinceName": "湖南",
-      //                 "normalCount": 3,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "海南",
-      //                 "normalCount": 1,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "广西",
-      //                 "normalCount": 1,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "河南",
-      //                 "normalCount": 1,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "天津",
-      //                 "normalCount": 3,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "山西",
-      //                 "normalCount": 3,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "浙江",
-      //                 "normalCount": 4,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "重庆",
-      //                 "normalCount": 3,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "安徽",
-      //                 "normalCount": 3,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "福建",
-      //                 "normalCount": 3,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "北京",
-      //                 "normalCount": 4,
-      //                 "maliciousCount": 1
-      //               },
-      //               {
-      //                 "provinceName": "四川",
-      //                 "normalCount": 4,
-      //                 "maliciousCount": 0
-      //               },
-      //               {
-      //                 "provinceName": "河北",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 0
-      //               },
-      //               {
-      //                 "provinceName": "贵州",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 0
-      //               },
-      //               {
-      //                 "provinceName": "黑龙江",
-      //                 "normalCount": 2,
-      //                 "maliciousCount": 0
-      //               }
-      //             ]
-      // }
-      console.log(data)
+      this.rates.maliciousWebNum = data.maliciousWebsiteCount
+      this.rates.normalWebNum = data.normalWebsiteCount
+      this.rates.maliciousIpNum = data.maliciousIpCount
+      this.rates.normalIpNum = data.normalIpCount
+
+      const sortedData = [...data.yearlyWebsiteInfo].sort((a, b) => a.year - b.year).slice(-10)
+      this.websiteTrend = {
+        years: sortedData.map(item => item.year),
+        total: sortedData.map(item => item.totalWebsiteCount),
+        normal: sortedData.map(item => item.normalWebsiteCount),
+        malicious: sortedData.map(item => item.maliciousWebsiteCount)
+      }
+
+      this.webArea = {
+        area: data.areaWebsiteInfo.map(item => item.provinceName),
+        normalNum: data.areaWebsiteInfo.map(item => item.normalCount),
+        maliciousNum: data.areaWebsiteInfo.map(item => item.maliciousCount)
+      }
     }
   }
 })

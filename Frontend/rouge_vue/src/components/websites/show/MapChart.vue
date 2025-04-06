@@ -40,7 +40,7 @@ watchEffect(() => {
     visualMap: {
       min: 0,
       max: Math.max(...data.value.area.map((_, i) =>
-        data.value.normalNum[i] + data.value.maliciousNum[i])) + 500,
+        data.value.normalNum[i] + data.value.maliciousNum[i])) + 10,
       text: ['数量'],
       realtime: false,
       calculable: true,

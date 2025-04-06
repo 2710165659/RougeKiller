@@ -50,7 +50,7 @@ watchEffect(() => {
     series: [
       {
         name: '全部网站',
-        data: data.value.totalWebNum,
+        data: data.value.total,
         type: 'line',
         areaStyle: {
           opacity: 0.5
@@ -59,7 +59,7 @@ watchEffect(() => {
       },
       {
         name: '恶意网站',
-        data: data.value.maliciousWebNum,
+        data: data.value.malicious,
         type: 'line',
         areaStyle: {
           opacity: 0.5
@@ -68,25 +68,7 @@ watchEffect(() => {
       },
       {
         name: '正常网站',
-        data: data.value.normalWebNum,
-        type: 'line',
-        areaStyle: {
-          opacity: 0.5
-        },
-        smooth: true
-      },
-      {
-        name: '恶意IP',
-        data: data.value.maliciousIpNum,
-        type: 'line',
-        areaStyle: {
-          opacity: 0.5
-        },
-        smooth: true
-      },
-      {
-        name: '正常IP',
-        data: data.value.normalIpNum,
+        data: data.value.normal,
         type: 'line',
         areaStyle: {
           opacity: 0.5
