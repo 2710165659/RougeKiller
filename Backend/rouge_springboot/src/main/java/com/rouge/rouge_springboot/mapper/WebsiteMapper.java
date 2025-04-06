@@ -28,8 +28,9 @@ public interface WebsiteMapper extends BaseMapper<Website> {
             "JOIN icp_services s ON s.website_id = w.id " +
             "JOIN icp_entities e ON s.entity_id = e.id " +
             "<where>" +
+            "   <if test='query.title != null'> AND w.title LIKE CONCAT('%', #{query.title}, '%') </if>" +
             "   <if test='query.url != null'> AND w.full_url LIKE CONCAT('%', #{query.url}, '%') </if>" +
-            "   <if test='query.ip != null'> AND w.ip = #{query.ip} </if>" +
+            "   <if test='query.ip != null and query.ip != \"\"'> AND w.ip = #{query.ip} </if>" +
             "   <if test='query.company != null'> AND e.entity_name LIKE CONCAT('%', #{query.company}, '%') </if>" +
             "</where>" + " ORDER BY w.created_at DESC " +
             "</script>")
