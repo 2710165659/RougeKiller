@@ -11,15 +11,21 @@
       <line-chart class="line-chart" :websiteTrend="websitesShowStore.websiteTrend" />
       <rates-charts class="rates-charts" :rates="websitesShowStore.rates" />
     </div>
+    <div class="row">
+      <bar-chart class="bar-chart" :webArea="websitesShowStore.webArea" />
+      <map-chart class="map-chart" :webArea="websitesShowStore.webArea" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useWebsitesShowStore } from '@/store/websitesShow'
-import ShowNumber from '@/components/websites/ShowNumber.vue'
+import ShowNumber from '@/components/websites/show/ShowNumber.vue'
 import { Monitor, Connection, OfficeBuilding, User } from '@element-plus/icons-vue'
-import LineChart from '@/components/websites/LineChart.vue'
-import RatesCharts from '@/components/websites/RatesCharts.vue'
+import LineChart from '@/components/websites/show/LineChart.vue'
+import RatesCharts from '@/components/websites/show/RatesCharts.vue'
+import BarChart from '@/components/websites/show/BarChart.vue'
+import MapChart from '@/components/websites/show/MapChart.vue'
 
 const websitesShowStore = useWebsitesShowStore()
 
@@ -32,6 +38,8 @@ const websitesShowStore = useWebsitesShowStore()
   flex-direction: column;
   align-items: start;
   gap: 20px;
+  height: calc(100vh-20px);
+  overflow: auto;
 }
 
 .row {
@@ -57,9 +65,45 @@ const websitesShowStore = useWebsitesShowStore()
 }
 
 .rates-charts {
-  width: 36%;
+  width: 38%;
   height: 400px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 第三行元素 */
+.bar-chart {
+  width: 45%;
+  height: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.map-chart {
+  width: 53%;
+  height: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 滚动条样式 */
+.container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 </style>

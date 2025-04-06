@@ -24,6 +24,12 @@ export const useWebsitesShowStore = defineStore("websitesShow", {
         normalWebNum: 3499,
         maliciousIpNum: 506,
         normalIpNum: 1701,
+      },
+      // 第三行信息
+      webArea: {
+        area: ['河北', '北京', '上海', '广东', '浙江', '江苏', '四川', '湖北', '山东', '福建'],
+        normalNum: [245, 312, 289, 425, 356, 278, 198, 267, 345, 234],
+        maliciousNum: [45, 67, 52, 88, 73, 58, 42, 51, 64, 48]
       }
     }
   },

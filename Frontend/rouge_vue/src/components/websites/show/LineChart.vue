@@ -20,7 +20,6 @@ watchEffect(() => {
 
   const chart = echarts.init(chartRef.value)
   const option = {
-
     tooltip: {
       trigger: 'axis',
       backgroundColor: '#252B3366',
