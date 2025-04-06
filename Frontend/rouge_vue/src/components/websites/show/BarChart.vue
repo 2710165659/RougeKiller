@@ -1,6 +1,6 @@
 <template>
   <div class="row-container">
-    <h1>网站-地区分布堆积图</h1>
+    <h1>网站-地区堆积图</h1>
     <div ref="chartRef" class="chart"></div>
   </div>
 </template>

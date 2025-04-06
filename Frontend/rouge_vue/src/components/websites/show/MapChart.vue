@@ -1,6 +1,6 @@
 <template>
   <div class="row-container">
-    <h1>地图</h1>
+    <h1>分布图</h1>
     <div ref="chartRef" class="chart"></div>
   </div>
 </template>

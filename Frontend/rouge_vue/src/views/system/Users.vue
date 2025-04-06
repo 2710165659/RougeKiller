@@ -95,8 +95,8 @@ const handleUpdate = async () => {
     await userStore.updateUser(editForm.value)
     ElMessage.success('账户信息更新成功')
     showEditDialog.value = false
-  } catch (ignore) {
-
+  } catch (error) {
+    handleError(error)
   }
 }
 
@@ -218,6 +218,7 @@ const handleLogout = () => {
 .loading {
   position: absolute;
   top: 50%;
+  margin-left: 20%;
   width: 80%;
 }
 </style>

@@ -33,4 +33,139 @@ export const useWebsitesShowStore = defineStore("websitesShow", {
       }
     }
   },
+  actions: {
+    async getData() {
+      this.loading = true
+      const res1 = await http.get("/websites/base")
+      const res2 = await http.get("/websites/other")
+      this.loadBaseInfo(res1.data)
+      this.loadOtherInfo(res2.data)
+      this.loading = false
+    },
+    loadBaseInfo(data) {
+      this.websiteNum = data.websiteCount
+      this.ipNum = data.ipCount
+      this.companyNum = data.companyCount
+      this.personNum = data.personCount
+    },
+    loadOtherInfo(data) {
+      // {
+      //   "normalWebsiteCount": 49,
+      //     "normalIpCount": 35,
+      //       "maliciousWebsiteCount": 21,
+      //         "maliciousIpCount": 15,
+      //           "yearlyWebsiteInfo": [
+      //             {
+      //               "year": 2025,
+      //               "totalWebsiteCount": 70,
+      //               "normalWebsiteCount": 49,
+      //               "maliciousWebsiteCount": 21
+      //             }
+      //           ],
+      //             "areaWebsiteInfo": [
+      //               {
+      //                 "provinceName": "上海",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 2
+      //               },
+      //               {
+      //                 "provinceName": "广东",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 2
+      //               },
+      //               {
+      //                 "provinceName": "江苏",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 2
+      //               },
+      //               {
+      //                 "provinceName": "山东",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 2
+      //               },
+      //               {
+      //                 "provinceName": "湖北",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 2
+      //               },
+      //               {
+      //                 "provinceName": "湖南",
+      //                 "normalCount": 3,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "海南",
+      //                 "normalCount": 1,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "广西",
+      //                 "normalCount": 1,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "河南",
+      //                 "normalCount": 1,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "天津",
+      //                 "normalCount": 3,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "山西",
+      //                 "normalCount": 3,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "浙江",
+      //                 "normalCount": 4,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "重庆",
+      //                 "normalCount": 3,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "安徽",
+      //                 "normalCount": 3,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "福建",
+      //                 "normalCount": 3,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "北京",
+      //                 "normalCount": 4,
+      //                 "maliciousCount": 1
+      //               },
+      //               {
+      //                 "provinceName": "四川",
+      //                 "normalCount": 4,
+      //                 "maliciousCount": 0
+      //               },
+      //               {
+      //                 "provinceName": "河北",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 0
+      //               },
+      //               {
+      //                 "provinceName": "贵州",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 0
+      //               },
+      //               {
+      //                 "provinceName": "黑龙江",
+      //                 "normalCount": 2,
+      //                 "maliciousCount": 0
+      //               }
+      //             ]
+      // }
+      console.log(data)
+    }
+  }
 })

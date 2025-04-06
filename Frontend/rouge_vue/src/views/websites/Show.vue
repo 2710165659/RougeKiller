@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div class="loading" v-loading="websitesShowStore.loading"></div>
+  <div v-if="!websitesShowStore.loading" class="container">
     <div class="row">
       <show-number class="row-item" title="网站数量" :num="websitesShowStore.websiteNum" color="red" :icon="Monitor" />
       <show-number class="row-item" title="IP数量" :num="websitesShowStore.ipNum" color="#8334F0" :icon="Connection" />
@@ -26,12 +27,28 @@ import LineChart from '@/components/websites/show/LineChart.vue'
 import RatesCharts from '@/components/websites/show/RatesCharts.vue'
 import BarChart from '@/components/websites/show/BarChart.vue'
 import MapChart from '@/components/websites/show/MapChart.vue'
+import { onBeforeMount } from 'vue'
+import { ElMessage } from 'element-plus'
 
 const websitesShowStore = useWebsitesShowStore()
 
+onBeforeMount(async () => {
+  try {
+    await websitesShowStore.getData()
+  } catch (error) {
+    ElMessage.error(error.response?.data || error.message)
+  }
+})
 </script>
 
 <style scoped>
+.loading {
+  position: absolute;
+  top: 50%;
+  margin-left: 20%;
+  width: 80%;
+}
+
 .container {
   padding: 20px;
   display: flex;
