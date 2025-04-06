@@ -52,10 +52,14 @@ const websitesShowStore = useWebsitesShowStore()
 .line-chart {
   width: 60%;
   height: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .rates-charts {
   width: 36%;
   height: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>
