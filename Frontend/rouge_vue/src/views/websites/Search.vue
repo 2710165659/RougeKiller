@@ -1,7 +1,7 @@
 <template>
     <div class="search-container">
         <!-- 标题栏 -->
-        <div class="search-title">软件下载网站检索</div>
+        <div class="search-title">网站检索</div>
 
         <!-- 搜索栏 -->
         <div class="search-bar">
@@ -9,41 +9,23 @@
                 <el-row>
                     <el-col :span="6">
                         <el-form-item label="网站标题">
-                            <el-input
-                                v-model="store.searchForm.title"
-                                placeholder="请输入网站标题"
-                                :prefix-icon="Search"
-                            />
+                            <el-input v-model="store.searchForm.title" placeholder="请输入网站标题" :prefix-icon="Search" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <el-form-item label="网站URL">
-                            <el-input
-                                v-model="store.searchForm.url"
-                                placeholder="请输入URL"
-                                :prefix-icon="Connection"
-                            />
+                            <el-input v-model="store.searchForm.url" placeholder="请输入URL" :prefix-icon="Connection" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <el-form-item label="公司名称">
-                            <el-input
-                                v-model="store.searchForm.company"
-                                placeholder="请输入公司名称"
-                                :prefix-icon="OfficeBuilding"
-                            />
+                            <el-input v-model="store.searchForm.company" placeholder="请输入公司名称"
+                                :prefix-icon="OfficeBuilding" />
                         </el-form-item>
                     </el-col>
-                    <el-col :span="5" :push="1">
-                        <el-button
-                            type="primary"
-                            @click="handleSearch"
-                            :icon="Search"
-                            >查询</el-button
-                        >
-                        <el-button @click="resetSearch" :icon="Refresh"
-                            >清空</el-button
-                        >
+                    <el-col :span="4" :offset="1">
+                        <el-button type="primary" @click="handleSearch" :icon="Search">查询</el-button>
+                        <el-button @click="resetSearch" :icon="Refresh">清空</el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -55,7 +37,9 @@
                 <div class="result-stats">
                     <div class="stats-header">
                         <span>相关结果</span>
-                        <el-icon><InfoFilled /></el-icon>
+                        <el-icon>
+                            <InfoFilled />
+                        </el-icon>
                     </div>
                     <div class="stats-count">{{ store.total }}</div>
                 </div>
@@ -64,43 +48,26 @@
                 </div>
             </div>
             <div class="result-list">
-                <WebsiteCard
-                    v-for="item in store.websiteList"
-                    :key="item.id"
-                    :data="item"
-                />
+                <WebsiteCard v-for="item in store.websiteList" :key="item.id" :data="item" />
             </div>
         </div>
 
         <!-- 分页 -->
         <div class="pagination">
-            <el-pagination
-                :current-page="store.searchForm.pageNum"
-                :page-size="store.searchForm.pageSize"
-                :background="true"
-                layout="total, prev, pager, next, jumper"
-                :total="store.total"
-                @current-change="
+            <el-pagination :current-page="store.searchForm.pageNum" :page-size="store.searchForm.pageSize"
+                :background="true" layout="prev, pager, next" :total="store.total" @current-change="
                     (val) => {
                         store.searchForm.pageNum = val
                         store.searchWebsites()
                     }
-                "
-            />
+                " />
         </div>
     </div>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-import {
-    Search,
-    Refresh,
-    OfficeBuilding,
-    Connection,
-    User,
-    InfoFilled
-} from '@element-plus/icons-vue'
+import { Search, Refresh, OfficeBuilding, Connection, InfoFilled } from '@element-plus/icons-vue'
 import WebsiteCard from '@/components/websites/search/WebsiteCard.vue'
 import { useWebsitesSearchStore } from '@/store/websitesSearch'
 import CountCirclrChart from '@/components/websites/search/CountCirclrChart.vue'
@@ -123,31 +90,45 @@ const resetSearch = () => {
 </script>
 
 <style scoped>
+/* 上面的 */
 .search-title {
     color: #efefef;
     width: 97%;
     padding: 10px;
     font-size: 20px;
     border-bottom: 0.5px solid #999;
+    user-select: none;
+    margin-bottom: 10px;
 }
-.search-bar {
-    margin-top: 10px;
-    padding-left: 20px;
-}
+
+
+/* 中间部分：搜索结果 */
 .result-area {
     display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.left-space {
+    width: 24%;
     height: 77vh;
 }
-.left-space {
-    width: 280px;
-    padding: 20px;
+
+.result-list {
+    width: 74%;
+    height: 77vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
+
 
 .result-stats {
     background: #343a40;
-    border-radius: 8px;
-    padding: 16px;
-    color: #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    color: whitesmoke;
+    margin-bottom: 20px;
 }
 
 .stats-header {
@@ -168,40 +149,64 @@ const resetSearch = () => {
     color: #ffffff;
 }
 
-.result-list {
-    flex: 1;
-    padding-right: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* grid-auto-rows: minmax(280px, auto); */
-    gap: 20px;
-}
+/* 底部分页 */
 .pagination {
-    display: flex;
-    margin-top: 20px;
-    margin-left: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-left: 7%;
 }
-::v-deep .el-form-item__label,
-::v-deep .el-pagination__total,
-::v-deep .el-pagination__goto {
+
+/* element-plus */
+:deep .el-form-item__label,
+:deep .el-pagination__total,
+:deep .el-pagination__goto,
+:deep .el-input__inner {
     color: #eee;
 }
-::v-deep .el-input__wrapper,
-::v-deep .el-pagination.is-background .btn-prev,
-::v-deep .el-pagination.is-background .btn-next,
-::v-deep .el-pagination.is-background .el-pager li {
-    background-color: #343a40; /* 更深的按钮背景 */
+
+:deep .el-input__wrapper,
+:deep .el-pagination.is-background .btn-prev,
+:deep .el-pagination.is-background .btn-next,
+:deep .el-pagination.is-background .el-pager li {
+    background-color: #343a40;
     color: #d1d5db;
 }
 
-::v-deep .el-pagination.is-background .el-pager li.is-active {
-    background-color: #20262c !important; /* 更柔和的选中色 */
+:deep .el-pagination.is-background .el-pager li.is-active {
+    background-color: #20262c !important;
     color: #ffffff !important;
 }
 
-::v-deep .el-pagination.is-background .btn-prev:hover,
-::v-deep .el-pagination.is-background .btn-next:hover,
-::v-deep .el-pagination.is-background .el-pager li:hover {
-    background-color: #3e464e; /* 悬停效果 */
+:deep .el-pagination.is-background .btn-prev:hover,
+:deep .el-pagination.is-background .btn-next:hover,
+:deep .el-pagination.is-background .el-pager li:hover {
+    background-color: #3e464e;
+}
+
+/* 按钮样式 */
+.el-button {
+    background-color: #343a40;
+    border-color: #495057;
+    color: #d1d5db;
+}
+
+.el-button:hover {
+    background-color: #3e464e;
+    border-color: #6c757d;
+    color: #ffffff;
+}
+
+.el-button--primary {
+    background-color: #3a5a9c;
+    border-color: #4a6db3;
+    color: #ffffff;
+}
+
+.el-button--primary:hover {
+    background-color: #4a6db3;
+    border-color: #5a7dc3;
+    color: #ffffff;
 }
 </style>

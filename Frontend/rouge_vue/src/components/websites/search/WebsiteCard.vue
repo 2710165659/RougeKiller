@@ -6,12 +6,14 @@
             </el-icon>
         </div>
 
-        <div class="url-button">
-            <el-button type="text">{{ data.url }}</el-button>
+        <div class="url-button" :class="{ bad: data.isMalicious }">
+            <span>{{ text }}</span>
+            {{ data.url }}
         </div>
-        <div class="info-list">
+
+        <div class=" info-list">
             <div class="info-item">
-                <span class="info-label">网站标题：</span>
+                <span class="info-label">标题：</span>
                 <span class="info-value">{{ data.title }}</span>
             </div>
             <div class="info-item">
@@ -23,11 +25,11 @@
                 <span class="info-value">{{ data.port }}</span>
             </div>
             <div class="info-item">
-                <span class="info-label">所属公司：</span>
+                <span class="info-label">所属：</span>
                 <span class="info-value">{{ data.company }}</span>
             </div>
             <div class="info-item">
-                <span class="info-label">服务代码：</span>
+                <span class="info-label">备案：</span>
                 <span class="info-value">{{ data.serviceCode }}</span>
             </div>
         </div>
@@ -36,19 +38,17 @@
 
 <script setup>
 import { Link } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 
-defineProps({
-    data: {
-        type: Object,
-        required: true
-    }
-})
+const props = defineProps(['data'])
+const text = ref(props.data.isMalicious ? '恶意' : '正常')
+
 </script>
 
 <style scoped>
 .website-card {
     transition: all 0.3s;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
     overflow: hidden;
     background: #343a40;
@@ -62,8 +62,27 @@ defineProps({
 }
 
 .url-button {
-    margin-bottom: 8px;
+    font-size: 12px;
+    padding: 7px;
     text-align: center;
+    color: #507cff;
+}
+
+.url-button span {
+    border: 1px solid #409eff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-right: 5px;
+    color: #409eff;
+}
+
+.bad {
+    color: #f56c6c;
+}
+
+.bad span {
+    color: #f56c6c;
+    border-color: #f56c6c;
 }
 
 .website-card:hover {
@@ -84,16 +103,17 @@ defineProps({
 .info-list {
     padding-left: 30px;
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .info-item {
     display: flex;
-    margin-bottom: 10px;
-    line-height: 1.5;
+    margin-bottom: 7px;
+    line-height: 1.2;
 }
 
 .info-label {
-    width: 80px;
+    width: 60px;
     color: #a0a8b0;
     font-weight: bold;
 }

@@ -24,46 +24,38 @@ const updateChart = () => {
     const option = {
         tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b}: {c} ({d}%)'
+            backgroundColor: '#252B3388',
+            borderColor: '#333',
+            formatter: '{b}:{c} ({d}%)',
+            textStyle: {
+                color: '#fff'
+            }
         },
         legend: {
             orient: 'horizontal',
-            right: 10,
+            left: 'center',
             top: 10,
             textStyle: {
-                color: '#eee'
+                color: '#fff'
             }
         },
         series: [
             {
-                name: '网站分类',
                 type: 'pie',
                 radius: ['50%', '70%'],
                 avoidLabelOverlap: false,
-                itemStyle: {
-                    borderColor: '#eee',
-                    borderWidth: 1
-                },
                 label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: '18',
-                        fontWeight: 'bold',
-                        color: '#ffffff'
-                    }
-                },
-                labelLine: {
-                    show: false
+                    show: true,
+                    position: 'center',
+                    fontSize: '18',
+                    fontWeight: 'bold',
+                    color: '#ffffff',
+                    formatter: '网站分类'
                 },
                 data: [
                     { value: store.maliciousCount, name: '恶意网站' },
                     { value: store.normalCount, name: '正常网站' }
                 ],
-                color: ['#598BF0', '#59D0A1']
             }
         ]
     }
