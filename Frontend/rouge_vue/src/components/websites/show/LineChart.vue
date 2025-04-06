@@ -1,6 +1,6 @@
 <template>
   <div class="row-container">
-    <h1>网站趋势变化图</h1>
+    <h1>新建网站趋势图</h1>
     <div ref="chartRef" class="chart"></div>
   </div>
 </template>
@@ -107,6 +107,7 @@ h1 {
   height: 10%;
   top: 3%;
   left: 3%;
+  user-select: none;
 }
 
 .chart {

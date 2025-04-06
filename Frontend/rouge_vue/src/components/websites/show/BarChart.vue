@@ -102,6 +102,7 @@ h1 {
   height: 10%;
   top: 3%;
   left: 3%;
+  user-select: none;
 }
 
 .chart {
