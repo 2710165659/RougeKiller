@@ -22,12 +22,15 @@ public interface InfoMapper {
             "(SELECT COUNT(DISTINCT ip) FROM websites WHERE is_malicious = true) AS maliciousIpCount")
     Map<String, Object> getOtherInfoCounts();
 
-    @Select("SELECT YEAR(created_at) AS year, " +
-            "COUNT(*) AS totalWebsiteCount, " +
-            "COUNT(CASE WHEN is_malicious = false THEN 1 END) AS normalWebsiteCount, " +
-            "COUNT(CASE WHEN is_malicious = true THEN 1 END) AS maliciousWebsiteCount " +
-            "FROM websites " +
-            "GROUP BY YEAR(created_at)")
+    @Select("SELECT \n" +
+            "    YEAR(icp_entities.approval_date) AS year,\n" +
+            "    COUNT(websites.id) AS totalWebsiteCount,\n" +
+            "    COUNT(CASE WHEN websites.is_malicious = false THEN 1 END) AS normalWebsiteCount,\n" +
+            "    COUNT(CASE WHEN websites.is_malicious = true THEN 1 END) AS maliciousWebsiteCount\n" +
+            "FROM websites\n" +
+            "JOIN icp_services ON icp_services.website_id = websites.id\n" +
+            "JOIN icp_entities ON icp_services.entity_id = icp_entities.id\n" +
+            "GROUP BY YEAR(icp_entities.approval_date)")
     List<Map<String, Object>> getWebsiteCountsByYear();
 
     @Select("SELECT \n" +

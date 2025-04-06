@@ -14,7 +14,9 @@ import com.rouge.rouge_springboot.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -41,8 +43,9 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website>  imp
         websiteDTO.setTotal(resultPage.getTotal());
         websiteDTO.setData(resultPage.getRecords());
         // 统计不同网站数量
-        websiteDTO.setNormalCount((int) websiteDTO.getData().stream().filter(dto-> dto.getIsMalicious() != null && !dto.getIsMalicious()).count());
-        websiteDTO.setMaliciousCount((int) (websiteDTO.getTotal() - websiteDTO.getNormalCount()));
+        List<Map<String, Object>> countByCondition = baseMapper.getCountByCondition(queryDTO);
+        websiteDTO.setNormalCount(((BigDecimal) countByCondition.get(0).get("normalCount")).intValue());
+        websiteDTO.setMaliciousCount(((BigDecimal) countByCondition.get(0).get("maliciousCount")).intValue());
 
         return websiteDTO;
     }

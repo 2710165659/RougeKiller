@@ -61,6 +61,9 @@
                     </div>
                     <div class="stats-count">{{ store.total }}</div>
                 </div>
+                <div class="chart">
+                    <CountCirclrChart />
+                </div>
             </div>
             <div class="result-list">
                 <WebsiteCard
@@ -100,8 +103,9 @@ import {
     User,
     InfoFilled
 } from '@element-plus/icons-vue'
-import WebsiteCard from '@/components/websites/WebsiteCard.vue'
+import WebsiteCard from '@/components/websites/search/WebsiteCard.vue'
 import { useWebsitesSearchStore } from '@/store/websitesSearch'
+import CountCirclrChart from '@/components/websites/search/CountCirclrChart.vue'
 
 const store = useWebsitesSearchStore()
 

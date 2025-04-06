@@ -13,7 +13,9 @@ export const useWebsitesSearchStore = defineStore("websitesSearch", {
       pageSize: 6,
       pageNum: 1
     }),
-    total: 0
+    total: 0,
+    maliciousCount: 0,
+    normalCount: 0
   }),
   actions: {
     async searchWebsites() {
@@ -27,6 +29,8 @@ export const useWebsitesSearchStore = defineStore("websitesSearch", {
         console.log('响应数据:', response.data) // 调试日志
         this.websiteList = response.data.data || []
         this.total = response.data.total || 0
+        this.maliciousCount = response.data.maliciousCount || 0
+        this.normalCount = response.data.normalCount || 0
       } catch (error) {
         console.error('请求错误:', error) // 错误日志
       } finally {
