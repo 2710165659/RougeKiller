@@ -74,9 +74,9 @@ const rules = {
   ]
 }
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   try {
-    userStore.fetchUser()
+    await userStore.fetchUser()
   } catch (error) {
     handleError(error)
   }
