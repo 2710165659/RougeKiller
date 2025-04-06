@@ -20,6 +20,12 @@
           </el-icon>
           <span>网站情报总览</span>
         </el-menu-item>
+        <el-menu-item index="/websites/search">
+          <el-icon class="icon">
+            <Search />
+          </el-icon>
+          <span>网站检索</span>
+        </el-menu-item>
         <el-menu-item index="/websites/diagram">
           <el-icon class="icon">
             <Histogram />
@@ -104,7 +110,7 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
-import { Monitor, PieChart, Histogram, AlarmClock, VideoPlay, Connection, Link, User, ChatDotRound, Setting, UserFilled, ChromeFilled } from '@element-plus/icons-vue/dist'
+import { Monitor, PieChart, Histogram, AlarmClock, VideoPlay, Connection, Link, User, ChatDotRound, Setting, UserFilled, ChromeFilled, Search } from '@element-plus/icons-vue/dist'
 import { computed } from 'vue'
 
 const route = useRoute()

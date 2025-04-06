@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import http from "@/axios"
 
-export const useWebsitesStore = defineStore("websites", {
+export const useWebsitesShowStore = defineStore("websitesShow", {
   state: () => {
     return {
       loading: true,

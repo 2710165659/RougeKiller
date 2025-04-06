@@ -1,27 +1,27 @@
 <template>
   <div class="container">
     <div class="row">
-      <show-number class="row-item" title="网站数量" :num="websitesStore.websiteNum" color="red" :icon="Monitor" />
-      <show-number class="row-item" title="IP数量" :num="websitesStore.ipNum" color="#8334F0" :icon="Connection" />
-      <show-number class="row-item" title="公司数量" :num="websitesStore.companyNum" color="#EFB111"
+      <show-number class="row-item" title="网站数量" :num="websitesShowStore.websiteNum" color="red" :icon="Monitor" />
+      <show-number class="row-item" title="IP数量" :num="websitesShowStore.ipNum" color="#8334F0" :icon="Connection" />
+      <show-number class="row-item" title="公司数量" :num="websitesShowStore.companyNum" color="#EFB111"
         :icon="OfficeBuilding" />
-      <show-number class="row-item" title="人员数量" :num="websitesStore.personNum" color="green" :icon="User" />
+      <show-number class="row-item" title="人员数量" :num="websitesShowStore.personNum" color="green" :icon="User" />
     </div>
     <div class="row">
-      <line-chart class="line-chart" :websiteTrend="websitesStore.websiteTrend" />
-      <rates-charts class="rates-charts" :rates="websitesStore.rates" />
+      <line-chart class="line-chart" :websiteTrend="websitesShowStore.websiteTrend" />
+      <rates-charts class="rates-charts" :rates="websitesShowStore.rates" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { useWebsitesStore } from '@/store/websites'
+import { useWebsitesShowStore } from '@/store/websitesShow'
 import ShowNumber from '@/components/websites/ShowNumber.vue'
 import { Monitor, Connection, OfficeBuilding, User } from '@element-plus/icons-vue'
 import LineChart from '@/components/websites/LineChart.vue'
 import RatesCharts from '@/components/websites/RatesCharts.vue'
 
-const websitesStore = useWebsitesStore()
+const websitesShowStore = useWebsitesShowStore()
 
 </script>
 
