@@ -1,11 +1,9 @@
 <template>
     <div class="search-container">
+        <!-- 标题栏 -->
+        <div class="search-title">软件下载网站检索</div>
+
         <!-- 搜索栏 -->
-        <el-row>
-            <el-col :span="24">
-                <div class="search-title">软件下载网站检索</div></el-col
-            >
-        </el-row>
         <div class="search-bar">
             <el-form :model="store.searchForm" label-width="80px">
                 <el-row>
@@ -51,7 +49,7 @@
             </el-form>
         </div>
 
-        <!-- 结果区域 -->
+        <!-- 搜索结果结果区域 -->
         <div class="result-area">
             <div class="left-space">
                 <div class="result-stats">
@@ -127,6 +125,7 @@ const resetSearch = () => {
 <style scoped>
 .search-title {
     color: #efefef;
+    width: 97%;
     padding: 10px;
     font-size: 20px;
     border-bottom: 0.5px solid #999;
@@ -137,6 +136,7 @@ const resetSearch = () => {
 }
 .result-area {
     display: flex;
+    height: 77vh;
 }
 .left-space {
     width: 280px;
@@ -177,9 +177,9 @@ const resetSearch = () => {
     gap: 20px;
 }
 .pagination {
-    position: absolute;
-    bottom: 10px;
-    left: 20%;
+    display: flex;
+    margin-top: 20px;
+    margin-left: 10px;
 }
 ::v-deep .el-form-item__label,
 ::v-deep .el-pagination__total,

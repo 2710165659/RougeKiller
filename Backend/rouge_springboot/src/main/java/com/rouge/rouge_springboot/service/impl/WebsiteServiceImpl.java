@@ -1,7 +1,6 @@
 package com.rouge.rouge_springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,9 +44,14 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website>  imp
         websiteDTO.setData(resultPage.getRecords());
         // 统计不同网站数量
         List<Map<String, Object>> countByCondition = baseMapper.getCountByCondition(queryDTO);
-        websiteDTO.setNormalCount(((BigDecimal) countByCondition.get(0).get("normalCount")).intValue());
-        websiteDTO.setMaliciousCount(((BigDecimal) countByCondition.get(0).get("maliciousCount")).intValue());
-
+        Map<String, Object> countMap = countByCondition.isEmpty() ? new HashMap<>() : countByCondition.get(0);
+        if(countMap == null) {
+            websiteDTO.setNormalCount(0);
+            websiteDTO.setMaliciousCount(0);
+        } else {
+            websiteDTO.setNormalCount(countMap.get("normalCount") == null ? 0 : ((BigDecimal) countMap.get("normalCount")).intValue());
+            websiteDTO.setMaliciousCount(countMap.get("maliciousCount") == null ? 0 : ((BigDecimal) countMap.get("maliciousCount")).intValue());
+        }
         return websiteDTO;
     }
 
