@@ -41,8 +41,8 @@ public interface WebsiteMapper extends BaseMapper<Website> {
 
     @Select("<script>" +
             "SELECT " +
-            "   SUM(CASE WHEN w.is_malicious = '0' THEN 1 ELSE 0 END) AS maliciousCount, " +
-            "   SUM(CASE WHEN w.is_malicious = '1' THEN 1 ELSE 0 END) AS normalCount " +
+            "   SUM(CASE WHEN w.is_malicious = '0' THEN 1 ELSE 0 END) AS normalCount, " +
+            "   SUM(CASE WHEN w.is_malicious = '1' THEN 1 ELSE 0 END) AS maliciousCount " +
             "FROM websites w " +
             "JOIN icp_services s ON s.website_id = w.id " +
             "JOIN icp_entities e ON s.entity_id = e.id " +
