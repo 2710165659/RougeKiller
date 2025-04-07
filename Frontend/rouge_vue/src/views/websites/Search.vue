@@ -71,21 +71,30 @@ import { Search, Refresh, OfficeBuilding, Connection, InfoFilled } from '@elemen
 import WebsiteCard from '@/components/websites/search/WebsiteCard.vue'
 import { useWebsitesSearchStore } from '@/store/websitesSearch'
 import CountCirclrChart from '@/components/websites/search/CountCirclrChart.vue'
+import { ElMessage } from 'element-plus'
 
 const store = useWebsitesSearchStore()
 
-onMounted(() => {
-    store.searchWebsites()
+onMounted(async () => {
+    search()
 })
 
 const handleSearch = () => {
     store.searchForm.pageNum = 1
-    store.searchWebsites()
+    search()
 }
 
 const resetSearch = () => {
     store.resetSearch()
-    store.searchWebsites()
+    search()
+}
+
+const search = async () => {
+    try {
+        await store.searchWebsites()
+    } catch (error) {
+        ElMessage.error(error.response?.data || error.message)
+    }
 }
 </script>
 
@@ -159,29 +168,29 @@ const resetSearch = () => {
 }
 
 /* element-plus */
-:deep .el-form-item__label,
-:deep .el-pagination__total,
-:deep .el-pagination__goto,
-:deep .el-input__inner {
+:deep(.el-form-item__label),
+:deep(.el-pagination__total),
+:deep(.el-pagination__goto),
+:deep(.el-input__inner) {
     color: #eee;
 }
 
-:deep .el-input__wrapper,
-:deep .el-pagination.is-background .btn-prev,
-:deep .el-pagination.is-background .btn-next,
-:deep .el-pagination.is-background .el-pager li {
+:deep(.el-input__wrapper),
+:deep(.el-pagination.is-background .btn-prev),
+:deep(.el-pagination.is-background .btn-next),
+:deep(.el-pagination.is-background .el-pager li) {
     background-color: #343a40;
     color: #d1d5db;
 }
 
-:deep .el-pagination.is-background .el-pager li.is-active {
+:deep(.el-pagination.is-background .el-pager li.is-active) {
     background-color: #20262c !important;
     color: #ffffff !important;
 }
 
-:deep .el-pagination.is-background .btn-prev:hover,
-:deep .el-pagination.is-background .btn-next:hover,
-:deep .el-pagination.is-background .el-pager li:hover {
+:deep(.el-pagination.is-background .btn-prev:hover),
+:deep(.el-pagination.is-background .btn-next:hover),
+:deep(.el-pagination.is-background .el-pager li:hover) {
     background-color: #3e464e;
 }
 

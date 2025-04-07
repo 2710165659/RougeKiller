@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 public interface EnterpriseMapper extends BaseMapper<Enterprise> {
     /**
      * 根据网站id获取企业信息
+     * 
      * @param websiteId
      * @return
      */

@@ -16,13 +16,14 @@ import java.sql.Timestamp;
 public class MybatisPlusConfig implements MetaObjectHandler {
     /**
      * 分页插件
+     * 
      * @return MybatisPlusInterceptor
      */
     @Bean
-    public MybatisPlusInterceptor mpInterceptor(){
-        //定义Mp拦截器
+    public MybatisPlusInterceptor mpInterceptor() {
+        // 定义Mp拦截器
         MybatisPlusInterceptor mpInterceptor = new MybatisPlusInterceptor();
-        //分页查询拦截器
+        // 分页查询拦截器
         mpInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return mpInterceptor;
     }

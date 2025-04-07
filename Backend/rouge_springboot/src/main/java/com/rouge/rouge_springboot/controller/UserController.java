@@ -1,6 +1,5 @@
 package com.rouge.rouge_springboot.controller;
 
-import com.rouge.rouge_springboot.model.entity.User;
 import com.rouge.rouge_springboot.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUserInfo(@RequestBody Map<String,String> userInfo, HttpServletRequest request) {
+    public ResponseEntity<?> updateUserInfo(@RequestBody Map<String, String> userInfo, HttpServletRequest request) {
         Long userId = Long.parseLong((String) request.getAttribute("userId"));
         return userService.updateUserById(userId, userInfo);
     }

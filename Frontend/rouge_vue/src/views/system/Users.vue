@@ -218,7 +218,6 @@ const handleLogout = () => {
 .loading {
   position: absolute;
   top: 50%;
-  margin-left: 20%;
   width: 80%;
 }
 </style>

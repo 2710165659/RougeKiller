@@ -4,7 +4,6 @@ import { reactive, ref } from "vue"
 
 export const useWebsitesSearchStore = defineStore("websitesSearch", {
   state: () => ({
-    loading: false,
     websiteList: [],
     searchForm: reactive({
       title: '',
@@ -19,25 +18,18 @@ export const useWebsitesSearchStore = defineStore("websitesSearch", {
   }),
   actions: {
     async searchWebsites() {
-        this.loading = true
-        this.websiteList = []
-        console.log('请求参数:', this.searchForm) // 调试日志
-      try {
-        const response = await http.get("/websites/search", {
-          params: this.searchForm
-        })
-        console.log('响应数据:', response.data) // 调试日志
-        this.websiteList = response.data.data || []
-        this.total = response.data.total || 0
-        this.maliciousCount = response.data.maliciousCount || 0
-        this.normalCount = response.data.normalCount || 0
-      } catch (error) {
-        console.error('请求错误:', error) // 错误日志
-      } finally {
-        this.loading = false
-      }
+      this.websiteList = []
+      // console.log('请求参数:', this.searchForm)
+      const response = await http.get("/websites/search", {
+        params: this.searchForm
+      })
+      // console.log('响应数据:', response.data)
+      this.websiteList = response.data.data || []
+      this.total = response.data.total || 0
+      this.maliciousCount = response.data.maliciousCount || 0
+      this.normalCount = response.data.normalCount || 0
     },
-    
+
     resetSearch() {
       this.searchForm = reactive({
         title: '',
@@ -46,7 +38,7 @@ export const useWebsitesSearchStore = defineStore("websitesSearch", {
         pageSize: 6,
         pageNum: 1
       })
-        this.websiteList = []
+      this.websiteList = []
     }
   }
 })

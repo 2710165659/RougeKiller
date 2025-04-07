@@ -13,7 +13,8 @@ import java.util.Arrays;
 public class LoggingAspect {
 
     @Pointcut("execution(* com.rouge.rouge_springboot.controller.AuthController.*(..))")
-    public void authControllerMethods() {}
+    public void authControllerMethods() {
+    }
 
     @Before("authControllerMethods()")
     public void logRequest(JoinPoint joinPoint) {

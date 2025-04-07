@@ -11,6 +11,7 @@ import java.util.List;
 public interface WebsiteService {
     /**
      * 多条件分页查询网站信息
+     * 
      * @param queryDTO 查询条件
      * @return 分页结果
      */
@@ -18,6 +19,7 @@ public interface WebsiteService {
 
     /**
      * 获取所有恶意网站URL
+     * 
      * @return 恶意网站URL列表
      */
     List<String> getMaliciousWebsiteUrls();

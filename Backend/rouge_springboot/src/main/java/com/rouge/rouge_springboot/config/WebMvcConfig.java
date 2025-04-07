@@ -30,11 +30,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         List<String> excludePaths = Arrays.asList(
                 "/auth/login",
                 "/auth/register",
-                "/websites"
-        );
+                "/websites");
 
-         // registry.addInterceptor(tokenInterceptor)
-         //         .addPathPatterns("/**")
-         //         .excludePathPatterns(excludePaths);
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(excludePaths);
     }
 }

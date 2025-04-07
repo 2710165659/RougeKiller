@@ -17,7 +17,7 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, Object> loginInfo){
+    public ResponseEntity<?> login(@RequestBody Map<String, Object> loginInfo) {
         try {
             String email = (String) loginInfo.get("email");
             String password = (String) loginInfo.get("password");
@@ -29,12 +29,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, Object> registerInfo){
+    public ResponseEntity<?> register(@RequestBody Map<String, Object> registerInfo) {
         try {
             String email = (String) registerInfo.get("email");
             String password = (String) registerInfo.get("password");
             String confirmPassword = (String) registerInfo.get("confirmPassword");
-            if (!password.equals(confirmPassword)) throw new Exception("Password does not match");
+            if (!password.equals(confirmPassword))
+                throw new Exception("Password does not match");
             return authService.register(email, password);
         } catch (Exception e) {
             throw new RuntimeException(e);

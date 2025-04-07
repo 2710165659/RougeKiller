@@ -17,7 +17,8 @@ import java.util.Objects;
 public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler)
+            throws Exception {
         // 从请求头中获取token
         String token = request.getHeader("Authorization");
 
