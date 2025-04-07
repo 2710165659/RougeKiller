@@ -20,6 +20,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/{path:[^\\.]*}")
+                .setViewName("forward:/index.html");
+        // 处理多级路径
         registry.addViewController("/{path:[^\\.]*}/**")
                 .setViewName("forward:/index.html");
     }
