@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 网站信息控制器
  */
-@RequestMapping("/websites")
+@RequestMapping("/api/websites")
 public class WebsiteController {
 
     @Autowired

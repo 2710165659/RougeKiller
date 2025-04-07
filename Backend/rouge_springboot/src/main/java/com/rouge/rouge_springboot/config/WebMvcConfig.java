@@ -20,7 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{path:[^\\.]*}")
+        registry.addViewController("/{path:[^\\.]*}/**")
                 .setViewName("forward:/index.html");
     }
 
@@ -28,12 +28,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 排除不需要拦截的路径
         List<String> excludePaths = Arrays.asList(
-                "/auth/login",
-                "/auth/register",
-                "/websites");
+                "/api/auth/login",
+                "/api/auth/register",
+                "/api/websites");
 
         registry.addInterceptor(tokenInterceptor)
-                .addPathPatterns("/**")
+                .addPathPatterns("/api/**")
                 .excludePathPatterns(excludePaths);
     }
 }
