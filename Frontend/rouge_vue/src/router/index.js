@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { useAuthStore } from '@/store/auth'
@@ -9,38 +9,38 @@ const routes = [
     component: DefaultLayout,
     meta: { requiresAuth: true },
     children: [
-      { path: '', component: () => import('@/views/Home.vue') },
+      { path: '', component: () => import('@/views/MyHome.vue') },
       {
         path: 'websites',
         children: [
-          { path: 'show', component: () => import('@/views/websites/Show.vue') },
-          { path: 'search', component: () => import('@/views/websites/Search.vue') },
-          { path: 'diagram', component: () => import('@/views/websites/Diagram.vue') },
+          { path: 'show', component: () => import('@/views/websites/WebsitesShow.vue') },
+          { path: 'search', component: () => import('@/views/websites/WebsitesSearch.vue') },
+          { path: 'diagram', component: () => import('@/views/websites/WebsitesDiagram.vue') },
         ]
       },
       {
         path: 'review',
         children: [
-          { path: 'detect', component: () => import('@/views/review/Detect.vue') },
-          { path: 'task', component: () => import('@/views/review/Task.vue') },
+          { path: 'detect', component: () => import('@/views/review/ReviewDetect.vue') },
+          { path: 'task', component: () => import('@/views/review/ReviewTask.vue') },
         ]
       },
       {
         path: 'trace',
         children: [
-          { path: 'homology', component: () => import('@/views/trace/Homology.vue') },
-          { path: 'person', component: () => import('@/views/trace/Person.vue') }
+          { path: 'homology', component: () => import('@/views/trace/TraceHomology.vue') },
+          { path: 'person', component: () => import('@/views/trace/TracePerson.vue') }
         ]
       },
       {
         path: 'qa',
-        component: () => import('@/views/qa/Index.vue')
+        component: () => import('@/views/qa/QaIndex.vue')
       },
       {
         path: 'system',
         children: [
-          { path: 'users', component: () => import('@/views/system/Users.vue') },
-          { path: 'extension', component: () => import('@/views/system/Extension.vue') }
+          { path: 'users', component: () => import('@/views/system/SystemUsers.vue') },
+          { path: 'extension', component: () => import('@/views/system/SystemExtension.vue') }
         ]
       }
 
@@ -50,8 +50,8 @@ const routes = [
     path: '/',
     component: AuthLayout,
     children: [
-      { path: 'login', component: () => import('@/views/auth/Login.vue') },
-      { path: 'register', component: () => import('@/views/auth/Register.vue') }
+      { path: 'login', component: () => import('@/views/auth/AuthLogin.vue') },
+      { path: 'register', component: () => import('@/views/auth/AuthRegister.vue') }
     ]
   },
   {
@@ -61,7 +61,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 

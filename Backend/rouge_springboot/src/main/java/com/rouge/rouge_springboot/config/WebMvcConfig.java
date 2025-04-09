@@ -15,18 +15,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private TokenInterceptor tokenInterceptor;
 
-    /**
-     * 配置路由，将未匹配的路径重定向到前端入口
-     */
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{path:[^\\.]*}")
-                .setViewName("forward:/index.html");
-        // 处理多级路径
-        registry.addViewController("/{path:[^\\.]*}/**")
-                .setViewName("forward:/index.html");
-    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 排除不需要拦截的路径
