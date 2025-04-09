@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkrouge_vue"]=self["webpackChunkrouge_vue"]||[]).push([[824],{6443:function(n,u,e){e.r(u),e.d(u,{default:function(){return f}});var r=e(6768);const t={class:"container"};function c(n,u){return(0,r.uX)(),(0,r.CE)("div",t,u[0]||(u[0]=[(0,r.Lk)("h2",null,"检测任务配置",-1)]))}var s=e(1241);const a={},o=(0,s.A)(a,[["render",c]]);var f=o}}]);
+//# sourceMappingURL=824.b421b1dd.js.map

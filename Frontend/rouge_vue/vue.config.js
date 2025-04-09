@@ -5,7 +5,7 @@ module.exports = defineConfig({
   pages: {
     index: {
       entry: 'src/main.js',
-      title: "RougeKiller管理界面"
+      title: "慧眼追踪管理界面"
     }
   },
   // 代理服务器

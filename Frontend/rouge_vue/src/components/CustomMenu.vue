@@ -3,7 +3,7 @@
     <router-link to="/" class="logo">
       <img src="@/assets/images/logo.png" alt="logo">
     </router-link>
-    <h1>Rouge Killer</h1>
+    <h1>慧眼追踪</h1>
 
     <el-menu class="menu" :default-active="activeIndex" mode="vertical" router>
 

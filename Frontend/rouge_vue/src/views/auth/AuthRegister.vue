@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h1>欢迎注册Rouge Killer</h1>
+    <h1>欢迎注册慧眼追踪</h1>
     <div class="form-container">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px" class="login-form">
         <el-form-item label="邮箱" prop="email">
