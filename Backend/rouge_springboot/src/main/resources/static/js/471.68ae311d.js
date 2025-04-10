@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkrouge_vue"]=self["webpackChunkrouge_vue"]||[]).push([[471],{4471:function(n,u,e){e.r(u),e.d(u,{default:function(){return o}});var r=e(6768);const t={class:"container"};function c(n,u){return(0,r.uX)(),(0,r.CE)("div",t,u[0]||(u[0]=[(0,r.Lk)("h2",null,"我是主页",-1),(0,r.Lk)("p",null,"介绍内容+图片",-1)]))}var s=e(1241);const a={},l=(0,s.A)(a,[["render",c]]);var o=l}}]);
+//# sourceMappingURL=471.68ae311d.js.map

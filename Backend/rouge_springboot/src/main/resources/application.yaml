@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: rouge_springboot
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.130.33.169:3306/rouge_killer_test
+#    url: jdbc:mysql://mysql-container:3306/rouge_killer_test
+    username: root
+    password: Qq2710165659
+
+server:
+  port: 3000
+
+mybatis-plus:
+  global-config:
+    banner: false
