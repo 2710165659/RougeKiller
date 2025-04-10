@@ -1,12 +1,12 @@
 <template>
     <div class="website-card" :class="{ malicious: data.isMalicious }">
-        <div class="icon-container">
+        <div class="icon-container" @click="gotoDetail">
             <el-icon :size="40">
                 <Link />
             </el-icon>
         </div>
 
-        <div class="url-button" :class="{ bad: data.isMalicious }">
+        <div class="url-button" :class="{ bad: data.isMalicious }" @click="gotoDetail">
             <span>{{ text }}</span>
             {{ data.url }}
         </div>
@@ -37,12 +37,16 @@
 </template>
 
 <script setup>
+import router from '@/router'
 import { Link } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 const props = defineProps(['data'])
 const text = ref(props.data.isMalicious ? '恶意' : '正常')
 
+const gotoDetail = () => {
+    router.push('/websites/detail/' + props.data.id)
+}
 </script>
 
 <style scoped>

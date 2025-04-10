@@ -15,7 +15,7 @@ const routes = [
         children: [
           { path: 'show', component: () => import('@/views/websites/WebsitesShow.vue') },
           { path: 'search', component: () => import('@/views/websites/WebsitesSearch.vue') },
-          { path: 'diagram', component: () => import('@/views/websites/WebsitesDiagram.vue') },
+          { path: 'detail/:id', component: () => import('@/views/websites/WebsitesDetail.vue') },
         ]
       },
       {

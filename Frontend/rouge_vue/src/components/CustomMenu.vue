@@ -26,12 +26,6 @@
           </el-icon>
           <span>网站检索</span>
         </el-menu-item>
-        <el-menu-item index="/websites/diagram">
-          <el-icon class="icon">
-            <Histogram />
-          </el-icon>
-          <span>网站画像</span>
-        </el-menu-item>
       </el-sub-menu>
 
       <el-sub-menu index="review">
