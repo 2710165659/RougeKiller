@@ -1,0 +1,12 @@
+CREATE TABLE tasks (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    full_url VARCHAR(255) NOT NULL COMMENT '完整URL',
+    status ENUM('待定','进行中','失败','完成') NOT NULL DEFAULT '待定' COMMENT '任务状态',
+    success_id BIGINT UNSIGNED COMMENT '成功时返回的网站表的ID',
+    error_message TEXT COMMENT '错误信息',
+    created_by BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (success_id) REFERENCES websites(id) ON DELETE SET NULL
+) COMMENT '任务表';
