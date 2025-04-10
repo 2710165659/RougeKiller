@@ -2,14 +2,10 @@
   <div class="wrapper">
     <div class="loading" v-loading="store.loading"></div>
     <div v-show="!store.loading" class="container">
+      <detail-head class="head" />
       <div class="row">
-
-      </div>
-      <div class="row">
-
-      </div>
-      <div class="row">
-
+        <web-detail class="detail" />
+        <web-owner class="owner" />
       </div>
     </div>
   </div>
@@ -17,6 +13,9 @@
 
 <script setup>
 import { useWebsitesDetailStore } from '@/store/websitesDetail'
+import DetailHead from '@/components/websites/detail/DetailHead.vue'
+import WebDetail from '@/components/websites/detail/WebDetail.vue'
+import WebOwner from '@/components/websites/detail/WebOwner.vue'
 import { onBeforeMount } from 'vue'
 import { ElMessage } from 'element-plus'
 
@@ -57,19 +56,30 @@ const id = route.params.id
   gap: 20px;
 }
 
+.head {
+  height: 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .row {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-/* 第一行元素 */
-.row-item {
-  width: 22%;
-  height: 150px;
+.row .detail {
+  width: 40%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.row .owner {
+  width: 58%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 
 
 
