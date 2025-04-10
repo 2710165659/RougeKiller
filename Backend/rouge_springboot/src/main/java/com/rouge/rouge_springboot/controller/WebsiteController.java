@@ -1,9 +1,8 @@
 package com.rouge.rouge_springboot.controller;
 
-import com.rouge.rouge_springboot.model.dto.BaseInfoDTO;
-import com.rouge.rouge_springboot.model.dto.OtherInfoDTO;
-import com.rouge.rouge_springboot.model.dto.WebsiteDTO;
-import com.rouge.rouge_springboot.model.dto.WebsiteQueryDTO;
+import com.rouge.rouge_springboot.model.dto.website.BaseInfoDTO;
+import com.rouge.rouge_springboot.model.dto.website.OtherInfoDTO;
+import com.rouge.rouge_springboot.model.dto.website.WebsiteDTO;
 import com.rouge.rouge_springboot.service.InfoService;
 import com.rouge.rouge_springboot.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +27,8 @@ public class WebsiteController {
     private InfoService infoService;
 
     /**
-     * 多条件查询网站信息
-     * 
-     * @param queryDTO 查询条件
-     * @return 分页结果
-     */
-    @GetMapping("/search")
-    public ResponseEntity<WebsiteDTO> searchWebsites(WebsiteQueryDTO queryDTO) {
-        return ResponseEntity.ok(websiteService.searchWebsites(queryDTO));
-    }
-
-    /**
-     * 获取所有黑名单url
-     * 
+     * 浏览器扩展api:获取所有黑名单url
+     *
      * @return 黑名单url列表
      */
     @GetMapping
@@ -50,7 +38,7 @@ public class WebsiteController {
 
     /**
      * 获取基础统计信息
-     * 
+     *
      * @return 包含基础统计信息的响应实体
      */
     @GetMapping("/base")
@@ -60,7 +48,7 @@ public class WebsiteController {
 
     /**
      * 获取其他统计信息
-     * 
+     *
      * @return 包含其他统计信息的响应实体
      */
     @GetMapping("/other")
@@ -68,4 +56,15 @@ public class WebsiteController {
         return ResponseEntity.ok(infoService.getOtherInfo());
     }
 
+
+    /**
+     * 多条件查询网站信息
+     * 
+     * @param queryDTO 查询条件
+     * @return 分页结果
+     */
+    @GetMapping("/search")
+    public ResponseEntity<WebsiteDTO> searchWebsites(WebsiteDTO.QueryDTO queryDTO) {
+        return ResponseEntity.ok(websiteService.searchWebsites(queryDTO));
+    }
 }

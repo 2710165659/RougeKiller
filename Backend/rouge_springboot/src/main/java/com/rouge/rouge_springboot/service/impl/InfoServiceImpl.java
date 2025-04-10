@@ -1,10 +1,8 @@
 package com.rouge.rouge_springboot.service.impl;
 
 import com.rouge.rouge_springboot.mapper.InfoMapper;
-import com.rouge.rouge_springboot.model.dto.AreaWebsiteInfoDTO;
-import com.rouge.rouge_springboot.model.dto.BaseInfoDTO;
-import com.rouge.rouge_springboot.model.dto.OtherInfoDTO;
-import com.rouge.rouge_springboot.model.dto.YearlyWebsiteInfoDTO;
+import com.rouge.rouge_springboot.model.dto.website.BaseInfoDTO;
+import com.rouge.rouge_springboot.model.dto.website.OtherInfoDTO;
 import com.rouge.rouge_springboot.service.InfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +39,8 @@ public class InfoServiceImpl implements InfoService {
         dto.setMaliciousWebsiteCount(((Number) counts.get("maliciousWebsiteCount")).intValue());
         dto.setMaliciousIpCount(((Number) counts.get("maliciousIpCount")).intValue());
 
-        List<YearlyWebsiteInfoDTO> yearlyInfo = yearlyData.stream().map(data -> {
-            YearlyWebsiteInfoDTO yearlyDto = new YearlyWebsiteInfoDTO();
+        List<OtherInfoDTO.YearlyWebsiteInfoDTO> yearlyInfo = yearlyData.stream().map(data -> {
+            OtherInfoDTO.YearlyWebsiteInfoDTO yearlyDto = new OtherInfoDTO.YearlyWebsiteInfoDTO();
             yearlyDto.setYear(((Number) data.get("year")).intValue());
             yearlyDto.setTotalWebsiteCount(((Number) data.get("totalWebsiteCount")).intValue());
             yearlyDto.setNormalWebsiteCount(((Number) data.get("normalWebsiteCount")).intValue());
@@ -51,8 +49,8 @@ public class InfoServiceImpl implements InfoService {
         }).collect(Collectors.toList());
         dto.setYearlyWebsiteInfo(yearlyInfo);
 
-        List<AreaWebsiteInfoDTO> areaInfo = areaData.stream().map(data -> {
-            AreaWebsiteInfoDTO areaDto = new AreaWebsiteInfoDTO();
+        List<OtherInfoDTO.AreaWebsiteInfoDTO> areaInfo = areaData.stream().map(data -> {
+            OtherInfoDTO.AreaWebsiteInfoDTO areaDto = new OtherInfoDTO.AreaWebsiteInfoDTO();
             areaDto.setProvinceName((String) data.get("province_name"));
             areaDto.setNormalCount(((Number) data.get("normal_count")).intValue());
             areaDto.setMaliciousCount(((Number) data.get("malicious_count")).intValue());

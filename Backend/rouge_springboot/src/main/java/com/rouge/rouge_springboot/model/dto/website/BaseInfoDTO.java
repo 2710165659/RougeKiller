@@ -1,4 +1,4 @@
-package com.rouge.rouge_springboot.model.dto;
+package com.rouge.rouge_springboot.model.dto.website;
 
 import lombok.Data;
 

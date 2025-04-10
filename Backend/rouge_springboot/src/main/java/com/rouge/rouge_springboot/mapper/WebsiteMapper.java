@@ -2,8 +2,7 @@ package com.rouge.rouge_springboot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.rouge.rouge_springboot.model.dto.WebsiteDetailDTO;
-import com.rouge.rouge_springboot.model.dto.WebsiteQueryDTO;
+import com.rouge.rouge_springboot.model.dto.website.WebsiteDTO;
 import com.rouge.rouge_springboot.model.entity.Website;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,7 +37,7 @@ public interface WebsiteMapper extends BaseMapper<Website> {
                         +
                         "</where>" + " ORDER BY w.created_at DESC " +
                         "</script>")
-        IPage<WebsiteDetailDTO> selectByCondition(IPage<Website> page, @Param("query") WebsiteQueryDTO query);
+        IPage<WebsiteDTO.WebsiteDetailDTO> selectByCondition(IPage<Website> page, @Param("query") WebsiteDTO.QueryDTO query);
 
         @Select("<script>" +
                         "SELECT " +
@@ -55,6 +54,6 @@ public interface WebsiteMapper extends BaseMapper<Website> {
                         +
                         "</where>" +
                         "</script>")
-        List<Map<String, Object>> getCountByCondition(@Param("query") WebsiteQueryDTO query);
+        List<Map<String, Object>> getCountByCondition(@Param("query") WebsiteDTO.QueryDTO query);
 
 }
