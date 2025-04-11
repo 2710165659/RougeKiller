@@ -4,8 +4,8 @@
     <div v-show="!store.loading" class="container">
       <detail-head class="head" />
       <div class="row">
-        <web-detail class="detail" />
-        <web-owner class="owner" />
+        <web-detail class="detail" :detail="store.detail" />
+        <web-owner class="owner" :ownerNature="store.ownerNature" :owner="store.owner" />
       </div>
     </div>
   </div>
@@ -69,13 +69,13 @@ const id = route.params.id
 }
 
 .row .detail {
-  width: 40%;
+  width: 25%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .row .owner {
-  width: 58%;
+  width: 73%;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
