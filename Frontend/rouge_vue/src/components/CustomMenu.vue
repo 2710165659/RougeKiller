@@ -28,7 +28,7 @@
         </el-menu-item>
       </el-sub-menu>
 
-      <el-sub-menu index="review">
+      <!-- <el-sub-menu index="review">
         <template #title>
           <el-icon class="icon">
             <AlarmClock />
@@ -47,7 +47,7 @@
           </el-icon>
           <span>检测任务配置</span>
         </el-menu-item>
-      </el-sub-menu>
+      </el-sub-menu> -->
       <!-- 
       <el-sub-menu index="trace">
         <template #title>
