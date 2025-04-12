@@ -2,11 +2,12 @@
   <div class="wrapper">
     <div class="loading" v-loading="store.loading"></div>
     <div v-show="!store.loading" class="container">
-      <detail-head class="head" />
-      <div class="row">
-        <web-detail class="detail" :detail="store.detail" />
-        <web-owner class="owner" :ownerNature="store.ownerNature" :owner="store.owner" />
+      <detail-head class="head item" />
+      <div class="row item">
+        <web-detail class="detail item" :detail="store.detail" />
+        <web-owner class="owner item" :ownerNature="store.ownerNature" :owner="store.owner" />
       </div>
+      <web-analysis class="diagram item" />
     </div>
   </div>
 </template>
@@ -16,6 +17,7 @@ import { useWebsitesDetailStore } from '@/store/websitesDetail'
 import DetailHead from '@/components/websites/detail/DetailHead.vue'
 import WebDetail from '@/components/websites/detail/WebDetail.vue'
 import WebOwner from '@/components/websites/detail/WebOwner.vue'
+import WebAnalysis from '@/components/websites/detail/WebAnalysis.vue'
 import { onBeforeMount } from 'vue'
 import { ElMessage } from 'element-plus'
 
@@ -56,10 +58,13 @@ const id = route.params.id
   gap: 20px;
 }
 
-.head {
-  height: 100px;
+.item {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.head {
+  height: 100px;
 }
 
 .row {
@@ -69,18 +74,17 @@ const id = route.params.id
 }
 
 .row .detail {
-  width: 25%;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 30%;
 }
 
 .row .owner {
-  width: 73%;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 68%;
 }
 
-
+.diagram {
+  width: 100%;
+  height: 70vh;
+}
 
 
 /* 滚动条样式 */

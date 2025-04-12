@@ -13,7 +13,7 @@ export const useWebsitesDetailStore = defineStore("websitesDetailSearch", {
         ip: '192.168.1.1',
         port: '80',
       },
-      ownerNature: '个人',
+      ownerNature: '企业',
       owner: {
         name: '河南卓昊科技有限公司',
         companyType: '有限责任公司',
@@ -28,13 +28,11 @@ export const useWebsitesDetailStore = defineStore("websitesDetailSearch", {
         businessTermStart: '2020-01-01',
         businessTermEnd: '2025-01-06',
       }
-
-
+      // 关联图谱数据
 
     }
   },
   actions: {
-
 
   }
 
