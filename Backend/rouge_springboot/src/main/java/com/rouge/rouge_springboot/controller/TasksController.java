@@ -1,5 +1,6 @@
 package com.rouge.rouge_springboot.controller;
 
+import com.rouge.rouge_springboot.model.dto.tasks.TasksDTO;
 import com.rouge.rouge_springboot.model.entity.Tasks;
 import com.rouge.rouge_springboot.service.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class TasksController {
     @Autowired
     private TasksService tasksService;
     @GetMapping
-    public ResponseEntity<List<Tasks>> searchByUrl(String url) {
-        List<Tasks> tasks = tasksService.searchByUrl(url);
+    public ResponseEntity<List<TasksDTO>> searchByUrl(String url) {
+        List<TasksDTO> tasks = tasksService.searchByUrl(url);
         return ResponseEntity.ok(tasks);
     }
 

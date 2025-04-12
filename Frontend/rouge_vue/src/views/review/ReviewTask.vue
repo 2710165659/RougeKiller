@@ -2,12 +2,12 @@
     <div class="container">
         <div class="task-title">检测任务配置</div>
         <div class="search-container">
-            <el-form :model="searchForm" label-width="80px">
+            <el-form label-width="80px">
                 <el-row>
                     <el-col :span="6">
                         <el-form-item label="URL">
                             <el-input
-                                v-model="searchForm.url"
+                                v-model="store.url"
                                 placeholder="请输入URL"
                                 class="search-input"
                                 :prefix-icon="Search"
@@ -17,14 +17,14 @@
                     <el-col :span="5" :offset="1">
                         <el-form-item label="任务状态">
                             <el-select
-                                v-model="searchForm.status"
+                                v-model="store.status"
                                 placeholder="请选择任务状态"
                                 effect="dark"
                             >
-                                <el-option label="待定" value="pending" />
-                                <el-option label="进行中" value="processing" />
-                                <el-option label="失败" value="failed" />
-                                <el-option label="完成" value="completed" />
+                                <el-option label="待定" value="待定" />
+                                <el-option label="进行中" value="进行中" />
+                                <el-option label="失败" value="失败" />
+                                <el-option label="完成" value="完成" />
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -50,26 +50,35 @@
             </el-form>
         </div>
         <div class="table">
-            <el-table :data="tableData" stripe style="width: 90%">
-                <el-table-column prop="id" label="ID" width="160" />
-                <el-table-column prop="url" label="检测URL" width="220" />
-                <el-table-column
-                    prop="created_by"
-                    label="添加人"
-                    align="center"
-                />
+            <el-table
+                :data="store.data"
+                stripe
+                style="width: 90%"
+                max-height="560px"
+            >
+                <el-table-column prop="id" label="ID" width="120" />
+                <el-table-column prop="fullUrl" label="检测URL" width="300" />
+                <el-table-column prop="name" label="添加人" align="center" />
                 <el-table-column
                     prop="status"
                     label="任务状态"
                     align="center"
                 />
-                <el-table-column label="任务操作" min-width="220">
+                <el-table-column
+                    label="任务操作"
+                    min-width="220"
+                    align="center"
+                >
                     <template #default="data">
                         <el-button
                             type="success"
                             @click.prevent="deleteRow(data.$index)"
+                            :disabled="
+                                data.row.status === '完成' ||
+                                data.row.status === '进行中'
+                            "
                         >
-                            开始
+                            {{ data.row.status === '失败' ? '重试' : '开始' }}
                         </el-button>
                         <el-button
                             type="danger"
@@ -93,39 +102,25 @@
 <script setup>
 import { ref } from 'vue'
 import { Search, Refresh } from '@element-plus/icons-vue'
+import { useReviewTask } from '@/store/reviewTask'
+import { onMounted } from 'vue'
 
-const searchForm = ref({
-    url: '',
-    status: ''
+const store = useReviewTask()
+
+onMounted(async () => {
+    store.searchTasks()
 })
 
-const tableData = ref([
-    {
-        id: '1001',
-        url: 'https://example.com',
-        created_by: '张三',
-        status: '进行中'
-    },
-    {
-        id: '1002',
-        url: 'https://test.com',
-        created_by: '李四',
-        status: '完成'
-    },
-    {
-        id: '1003',
-        url: 'https://demo.com',
-        created_by: '王五',
-        status: '待定'
-    }
-])
-
 const handleSearch = () => {
-    console.log('搜索:', searchForm.value)
+    store.searchTasks()
 }
 
 const handleAddTask = () => {
     console.log('新增检测任务:', searchForm.value.url)
+}
+
+const resetSearch = () => {
+    store.resetSearch()
 }
 </script>
 
