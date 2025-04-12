@@ -12,7 +12,7 @@
       <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="输入您的问题..."
         @keyup.enter.native="sendMessage" />
       <div class="button-group">
-        <el-button type="primary" @click="sendMessage" :disabled="qaStore.isLoading" :loading="qaStore.isLoading">
+        <el-button type="primary" @click="sendMessage" :loading="qaStore.isLoading">
           发送
         </el-button>
         <el-button type="danger" @click="clearMessages">
@@ -33,6 +33,7 @@ const inputMessage = ref('')
 const messagesContainer = ref(null)
 
 const sendMessage = () => {
+  if (qaStore.isLoading) return
   if (inputMessage.value.trim()) {
     qaStore.sendMessage(inputMessage.value)
     inputMessage.value = ''

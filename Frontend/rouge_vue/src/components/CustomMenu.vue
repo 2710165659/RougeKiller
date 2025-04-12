@@ -48,7 +48,7 @@
           <span>检测任务配置</span>
         </el-menu-item>
       </el-sub-menu>
-
+      <!-- 
       <el-sub-menu index="trace">
         <template #title>
           <el-icon class="icon">
@@ -68,7 +68,7 @@
           </el-icon>
           <span>人员追踪</span>
         </el-menu-item>
-      </el-sub-menu>
+      </el-sub-menu> -->
 
       <el-menu-item index="/qa">
         <el-icon class="icon">

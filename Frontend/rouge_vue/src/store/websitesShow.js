@@ -4,7 +4,7 @@ import http from "@/axios"
 export const useWebsitesShowStore = defineStore("websitesShow", {
   state: () => {
     return {
-      loading: true,
+      loading: false,
       // 第一行信息
       websiteNum: 4459,
       ipNum: 2207,
@@ -33,12 +33,12 @@ export const useWebsitesShowStore = defineStore("websitesShow", {
   },
   actions: {
     async getData() {
-      this.loading = true
-      const res1 = await http.get("/websites/base")
-      const res2 = await http.get("/websites/other")
-      this.loadBaseInfo(res1.data)
-      this.loadOtherInfo(res2.data)
-      this.loading = false
+      // this.loading = true
+      // const res1 = await http.get("/websites/base")
+      // const res2 = await http.get("/websites/other")
+      // this.loadBaseInfo(res1.data)
+      // this.loadOtherInfo(res2.data)
+      // this.loading = false
     },
     loadBaseInfo(data) {
       this.websiteNum = data.websiteCount

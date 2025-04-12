@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
 import MarkdownIt from 'markdown-it'
 
 export const useQaStore = defineStore('qa', {
@@ -7,7 +8,6 @@ export const useQaStore = defineStore('qa', {
     messages: [],
     isLoading: false,
     sessionId: '',
-    eventSource: null  // 用于保存SSE连接实例
   }),
   actions: {
     async sendMessage(content) {
@@ -19,39 +19,59 @@ export const useQaStore = defineStore('qa', {
       this.messages.push(userMessage)
       this.isLoading = true
 
-      const aiMessage = {
-        role: 'assistant',
-        content: '',
-        timestamp: new Date().toISOString()
-      }
-      this.messages.push(aiMessage)
-      const aiIndex = this.messages.length - 1
+      this.callDashScope(content)
+    },
+    async callDashScope(content) {
+      const apiKey = 'sk-c518b4cb469f49c6a9852625848b4d3c';
+      const appId = '6124e78be439410d9207f89f10239931';
 
-      // 关闭现有连接
-      if (this.eventSource) {
-        this.eventSource.close()
-      }
+      const url = `https://dashscope.aliyuncs.com/api/v1/apps/${appId}/completion`;
 
-      this.eventSource = new EventSource(`/api/qa/stream?content=${encodeURIComponent(content)}`)
+      const data = {
+        input: {
+          prompt: content,
+          session_id: this.sessionId,
+        },
+        parameters: {},
+        debug: {}
+      };
+      try {
+        const response = await axios.post(url, data, {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          }
+        });
+        if (response.status === 200) {
+          this.sessionId = response.data.output.session_id
+          const aiMessage = {
+            role: 'assistant',
+            content: response.data.output.text,
+            timestamp: new Date().toISOString()
+          }
+          this.messages.push(aiMessage)
+          this.isLoading = false
 
-      this.eventSource.onmessage = (event) => {
-        this.messages[aiIndex].content += event.data
-      }
 
-      this.eventSource.onerror = () => {
-        this.eventSource.close()
-        this.isLoading = false
+          console.log(`${response.data.output.text}`);
+          console.log(`session_id=${response.data.output.session_id}`);
+        } else {
+          console.log(`request_id=${response.headers['request_id']}`);
+          console.log(`code=${response.status}`);
+          console.log(`message=${response.data.message}`);
+        }
+      } catch (error) {
+        console.error(`Error calling DashScope: ${error.message}`);
+        if (error.response) {
+          console.error(`Response status: ${error.response.status}`);
+          console.error(`Response data: ${JSON.stringify(error.response.data, null, 2)}`);
+        }
       }
+    },
+    clearMessages() {
+      this.messages = []
+      this.sessionId = ''
+      this.isLoading = false
     }
   },
-  clearMessages() {
-    this.messages = []
-    this.sessionId = ''
-    // 清除时关闭现有连接
-    if (this.eventSource) {
-      this.eventSource.close()
-      this.eventSource = null
-    }
-  }
-
 })
