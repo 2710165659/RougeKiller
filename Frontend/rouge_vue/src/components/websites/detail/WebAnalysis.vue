@@ -43,8 +43,12 @@ watchEffect(() => {
     },
     legend: {
       data: ['正常企业', '相似企业', '恶意网站', '正常网站', '共享IP'],
-      top: 20,
-      textStyle: { fontSize: 12 }
+      orient: 'vertical',
+      right: 10,
+      textStyle: {
+        fontSize: 12,
+        color: "#ffffff"
+      }
     },
     series: [{
       name: '企业网站关系网络',
@@ -72,246 +76,272 @@ watchEffect(() => {
       data: [
         // 企业节点
         {
-          name: '科技公司A',
+          name: '星辰科技集团',
           category: 0,
           symbolSize: 35,
           industry: '互联网服务',
-          desc: '上市公司'
+          desc: '上市公司，主要提供企业云服务'
         },
         {
-          name: '电子商务B',
+          name: '极速电子商务',
           category: 0,
           symbolSize: 30,
           industry: '电商平台',
-          desc: '跨境电商'
+          desc: '国内知名B2C电商平台'
         },
         {
-          name: '数据科技C',
+          name: '迅捷软件',
           category: 0,
           symbolSize: 28,
-          industry: '大数据',
-          desc: '初创企业'
+          industry: '软件开发',
+          desc: '专业软件开发商'
         },
         {
-          name: '云服务D',
+          name: '云端数据服务',
           category: 0,
           symbolSize: 32,
           industry: '云计算',
-          desc: '基础设施提供商'
+          desc: '企业级云存储解决方案'
         },
         // 相似企业
         {
-          name: '科技公司A-相似',
+          name: '星辰科技(国际)',
           category: 1,
           symbolSize: 25,
           industry: '互联网服务',
-          similarity: '75%'
+          similarity: '78%'
         },
         {
-          name: '电子商务B-相似',
+          name: '极速商城',
           category: 1,
           symbolSize: 25,
           industry: '电商平台',
-          similarity: '68%'
+          similarity: '72%'
         },
 
-        // 恶意网站
+        // 恶意网站 - 伪装成合法下载站
         {
-          name: 'malicious-1.com',
+          name: 'fastdownloads-pro.com',
           category: 2,
           symbolSize: 25,
-          ip: '192.168.1.100',
+          ip: '185.143.223.47',
           threatLevel: '高',
-          similarity: '82%'
+          similarity: '85%',
+          desc: '伪装成专业软件下载站'
         },
         {
-          name: 'phishing-2.net',
+          name: 'softarchive.cc',
           category: 2,
           symbolSize: 28,
-          ip: '103.45.67.89',
+          ip: '91.234.56.78',
           threatLevel: '极高',
-          similarity: '90%'
+          similarity: '92%',
+          desc: '分发捆绑恶意软件的破解程序'
         },
         {
-          name: 'scam-site.org',
+          name: 'premium-cracks.net',
           category: 2,
           symbolSize: 22,
-          ip: '192.168.1.101',
+          ip: '185.143.223.48',
           threatLevel: '中',
-          similarity: '65%'
+          similarity: '68%',
+          desc: '提供携带木马的"激活工具"'
+        },
+        {
+          name: 'driver-updates.io',
+          category: 2,
+          symbolSize: 26,
+          ip: '104.28.156.33',
+          threatLevel: '高',
+          similarity: '79%',
+          desc: '伪装驱动程序更新网站'
         },
 
         // 正常网站
         {
-          name: 'company-a.com',
+          name: 'star-tech.com',
           category: 3,
           symbolSize: 20,
-          ip: '45.67.89.123',
-          desc: '企业官网'
+          ip: '203.86.92.15',
+          desc: '星辰科技集团官网'
         },
         {
-          name: 'shop-b.com',
+          name: 'js-eshop.com',
           category: 3,
           symbolSize: 20,
-          ip: '45.67.89.123',
-          desc: '官方商城'
+          ip: '203.86.92.16',
+          desc: '极速电子商务官方商城'
         },
         {
-          name: 'api-c.com',
+          name: 'api.xunjiesoft.com',
           category: 3,
           symbolSize: 18,
-          ip: '203.156.34.12',
-          desc: '企业API'
+          ip: '45.67.123.89',
+          desc: '迅捷软件开发者API'
         },
 
         // 共享IP
         {
-          name: '45.67.89.123',
+          name: '185.143.223.47',
           category: 4,
           symbolSize: 15,
-          desc: '共享主机IP',
-          sharedSites: 2
+          desc: '恶意软件分发网络',
+          sharedSites: 3
         },
         {
-          name: '192.168.1.100',
+          name: '91.234.56.78',
           category: 4,
           symbolSize: 15,
-          desc: '恶意网站常用IP'
+          desc: '已知钓鱼IP段'
         },
         {
-          name: '103.45.67.89',
+          name: '104.28.156.33',
           category: 4,
           symbolSize: 15,
-          desc: '钓鱼IP'
+          desc: '恶意软件托管服务器'
         },
         {
-          name: '192.168.1.101',
+          name: '203.86.92.15',
           category: 4,
-          symbolSize: 15
+          symbolSize: 15,
+          desc: '企业服务器IP'
         },
         {
-          name: '203.156.34.12',
+          name: '45.67.123.89',
           category: 4,
-          symbolSize: 15
+          symbolSize: 15,
+          desc: '云服务IP'
         }
       ],
       links: [
         // 企业关系
         {
-          source: '科技公司A',
-          target: '电子商务B',
-          relation: '合作伙伴',
+          source: '星辰科技集团',
+          target: '极速电子商务',
+          relation: '云服务客户',
           lineStyle: { width: 2, curveness: 0.2 }
         },
         {
-          source: '科技公司A',
-          target: '数据科技C',
-          relation: '投资关系',
+          source: '星辰科技集团',
+          target: '迅捷软件',
+          relation: '战略投资',
           lineStyle: { width: 1.5 }
         },
         {
-          source: '电子商务B',
-          target: '云服务D',
-          relation: '云服务商',
+          source: '极速电子商务',
+          target: '云端数据服务',
+          relation: '数据存储服务',
           lineStyle: { width: 1.5 }
         },
 
         // 相似企业关系
         {
-          source: '科技公司A',
-          target: '科技公司A-相似',
+          source: '星辰科技集团',
+          target: '星辰科技(国际)',
           relation: '相似企业',
           lineStyle: { width: 1, type: 'dashed' }
         },
         {
-          source: '电子商务B',
-          target: '电子商务B-相似',
+          source: '极速电子商务',
+          target: '极速商城',
           relation: '相似企业',
           lineStyle: { width: 1, type: 'dashed' }
         },
 
         // 企业拥有网站
         {
-          source: '科技公司A',
-          target: 'company-a.com',
+          source: '星辰科技集团',
+          target: 'star-tech.com',
           relation: '官方网站',
           lineStyle: { width: 1.5 }
         },
         {
-          source: '电子商务B',
-          target: 'shop-b.com',
+          source: '极速电子商务',
+          target: 'js-eshop.com',
           relation: '电商平台',
           lineStyle: { width: 1.5 }
         },
         {
-          source: '数据科技C',
-          target: 'api-c.com',
-          relation: '数据接口',
+          source: '迅捷软件',
+          target: 'api.xunjiesoft.com',
+          relation: '开发者平台',
           lineStyle: { width: 1.5 }
         },
 
         // 恶意网站关系
         {
-          source: 'malicious-1.com',
-          target: 'phishing-2.net',
-          relation: '高度相似',
+          source: 'fastdownloads-pro.com',
+          target: 'softarchive.cc',
+          relation: '相同C&C服务器',
           lineStyle: { width: 2, curveness: 0.3 }
         },
         {
-          source: 'phishing-2.net',
-          target: 'scam-site.org',
-          relation: '部分相似',
+          source: 'softarchive.cc',
+          target: 'premium-cracks.net',
+          relation: '相同攻击组织',
           lineStyle: { width: 1.5, curveness: 0.3 }
+        },
+        {
+          source: 'driver-updates.io',
+          target: 'fastdownloads-pro.com',
+          relation: '相似恶意代码',
+          lineStyle: { width: 1.5 }
         },
 
         // IP关联
         {
-          source: 'company-a.com',
-          target: '45.67.89.123',
+          source: 'star-tech.com',
+          target: '203.86.92.15',
           relation: '解析到',
           lineStyle: { width: 1, type: 'dashed' }
         },
         {
-          source: 'shop-b.com',
-          target: '45.67.89.123',
+          source: 'js-eshop.com',
+          target: '203.86.92.16',
           relation: '解析到',
           lineStyle: { width: 1, type: 'dashed' }
         },
         {
-          source: 'malicious-1.com',
-          target: '192.168.1.100',
+          source: 'fastdownloads-pro.com',
+          target: '185.143.223.47',
           relation: '解析到',
           lineStyle: { width: 1, type: 'dashed' }
         },
         {
-          source: 'phishing-2.net',
-          target: '103.45.67.89',
+          source: 'softarchive.cc',
+          target: '91.234.56.78',
           relation: '解析到',
           lineStyle: { width: 1, type: 'dashed' }
         },
         {
-          source: 'scam-site.org',
-          target: '192.168.1.101',
+          source: 'premium-cracks.net',
+          target: '185.143.223.48',
           relation: '解析到',
           lineStyle: { width: 1, type: 'dashed' }
         },
         {
-          source: 'api-c.com',
-          target: '203.156.34.12',
+          source: 'api.xunjiesoft.com',
+          target: '45.67.123.89',
+          relation: '解析到',
+          lineStyle: { width: 1, type: 'dashed' }
+        },
+        {
+          source: 'driver-updates.io',
+          target: '104.28.156.33',
           relation: '解析到',
           lineStyle: { width: 1, type: 'dashed' }
         },
 
         // 共享IP关系
         {
-          source: '45.67.89.123',
-          target: 'company-a.com',
+          source: '185.143.223.47',
+          target: 'fastdownloads-pro.com',
           relation: '托管',
           lineStyle: { width: 1, curveness: 0.1 }
         },
         {
-          source: '45.67.89.123',
-          target: 'shop-b.com',
+          source: '185.143.223.47',
+          target: 'premium-cracks.net',
           relation: '托管',
           lineStyle: { width: 1, curveness: 0.1 }
         }
