@@ -36,6 +36,12 @@
                         >
                             搜索
                         </el-button>
+                        <el-button
+                            @click="resetSearch"
+                            :icon="Refresh"
+                            type="info"
+                            >清空</el-button
+                        >
                         <el-button type="primary" @click="handleAddTask">
                             新增检测任务
                         </el-button>
@@ -86,7 +92,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import { Search, Refresh } from '@element-plus/icons-vue'
 
 const searchForm = ref({
     url: '',
