@@ -12,4 +12,13 @@ public interface TasksService {
      * @return
      */
     List<TasksDTO> searchByUrl(String url);
+
+    /**
+     * 开始任务
+     * @param id
+     * @return
+     */
+    boolean startTask(Long id);
+
+    boolean deleteTask(Long id);
 }

@@ -21,4 +21,17 @@ public class TasksServiceImpl implements TasksService {
         if(url==null) url="";
         return tasksMapper.getTasksByUrl(url);
     }
+
+    @Override
+    public boolean startTask(Long id) {
+        //启动任务
+        Tasks task = tasksMapper.selectById(id);
+        task.setStatus("进行中");
+        return tasksMapper.updateById(task) > 0;
+    }
+
+    @Override
+    public boolean deleteTask(Long id) {
+        return tasksMapper.deleteById(id) > 0;
+    }
 }

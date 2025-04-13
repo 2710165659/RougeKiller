@@ -1,13 +1,16 @@
 package com.rouge.rouge_springboot.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
 public class Tasks {
     /**
-     * 任务ID，主键，自增
+     * 任务ID，主键
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

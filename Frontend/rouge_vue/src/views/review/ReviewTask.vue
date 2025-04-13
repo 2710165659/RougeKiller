@@ -72,7 +72,7 @@
                     <template #default="data">
                         <el-button
                             type="success"
-                            @click.prevent="deleteRow(data.$index)"
+                            @click.prevent="store.startTask(data.row.id)"
                             :disabled="
                                 data.row.status === '完成' ||
                                 data.row.status === '进行中'
@@ -82,7 +82,7 @@
                         </el-button>
                         <el-button
                             type="danger"
-                            @click.prevent="deleteRow(data.$index)"
+                            @click.prevent="handleDeleteTask(data.row.id)"
                         >
                             删除
                         </el-button>
@@ -104,6 +104,7 @@ import { ref } from 'vue'
 import { Search, Refresh } from '@element-plus/icons-vue'
 import { useReviewTask } from '@/store/reviewTask'
 import { onMounted } from 'vue'
+import { ElMessageBox } from 'element-plus'
 
 const store = useReviewTask()
 
@@ -119,6 +120,19 @@ const handleAddTask = () => {
     console.log('新增检测任务:', searchForm.value.url)
 }
 
+const handleDeleteTask = async (id) => {
+    try {
+        await ElMessageBox.confirm('确定要删除此任务吗？', '删除确认', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            effect: 'dark'
+        })
+        store.deleteTask(id)
+    } catch (error) {
+        // 用户点击取消
+    }
+}
 const resetSearch = () => {
     store.resetSearch()
 }
