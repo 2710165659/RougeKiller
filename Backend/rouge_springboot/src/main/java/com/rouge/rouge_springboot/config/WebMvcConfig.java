@@ -22,8 +22,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/api/auth/register",
                 "/api/websites");
 
-        // registry.addInterceptor(tokenInterceptor)
-        //         .addPathPatterns("/api/**")
-        //         .excludePathPatterns(excludePaths);
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/api/**")
+                .excludePathPatterns(excludePaths);
     }
 }

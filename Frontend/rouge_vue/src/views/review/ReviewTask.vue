@@ -88,7 +88,7 @@
                         </el-button>
                         <el-button
                             type="info"
-                            @click.prevent="deleteRow(data.$index)"
+                            @click.prevent="taskInfoRef.show(data.row)"
                         >
                             查看
                         </el-button>
@@ -96,6 +96,7 @@
                 </el-table-column>
             </el-table>
         </div>
+        <TaskInfo ref="taskInfoRef" />
     </div>
 </template>
 
@@ -105,8 +106,10 @@ import { Search, Refresh } from '@element-plus/icons-vue'
 import { useReviewTask } from '@/store/reviewTask'
 import { onMounted } from 'vue'
 import { ElMessageBox } from 'element-plus'
+import TaskInfo from '@/components/review/TaskInfo.vue'
 
 const store = useReviewTask()
+const taskInfoRef = ref()
 
 onMounted(async () => {
     store.searchTasks()
