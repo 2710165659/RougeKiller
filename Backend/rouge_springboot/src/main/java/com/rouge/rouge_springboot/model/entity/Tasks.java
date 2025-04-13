@@ -1,6 +1,8 @@
 package com.rouge.rouge_springboot.model.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import java.sql.Timestamp;
@@ -41,10 +43,12 @@ public class Tasks {
     /**
      * 创建时间，默认值为当前时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Timestamp createdAt;
 
     /**
      * 更新时间，默认值为当前时间，更新时自动更新
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Timestamp updatedAt;
 }

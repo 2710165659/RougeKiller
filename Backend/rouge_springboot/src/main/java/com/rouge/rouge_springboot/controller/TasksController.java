@@ -3,6 +3,7 @@ package com.rouge.rouge_springboot.controller;
 import com.rouge.rouge_springboot.model.dto.tasks.TasksDTO;
 import com.rouge.rouge_springboot.model.entity.Tasks;
 import com.rouge.rouge_springboot.service.TasksService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,13 @@ public class TasksController {
     public ResponseEntity<Boolean> deleteTask(@PathVariable("id") Long id) {
         boolean success = tasksService.deleteTask(id);
         return ResponseEntity.ok(success);
+    }
+
+    @PostMapping
+    public ResponseEntity<Tasks> addTask(HttpServletRequest request, @RequestBody Tasks tasks) {
+        Long userId = Long.parseLong((String) request.getAttribute("userId"));
+        tasks.setCreatedBy(userId);
+        Tasks newTask = tasksService.addTask(tasks);
+        return ResponseEntity.ok(newTask);
     }
 }

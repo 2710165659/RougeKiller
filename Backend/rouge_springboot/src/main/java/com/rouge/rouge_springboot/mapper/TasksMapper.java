@@ -15,7 +15,7 @@ public interface TasksMapper extends BaseMapper<Tasks> {
 
     @Select("SELECT tasks.* , users.name \n" +
             "FROM tasks\n" +
-            "JOIN users on tasks.id = users.id \n" +
+            "JOIN users on tasks.created_by = users.id \n" +
             "WHERE tasks.full_url LIKE CONCAT('%', #{fullUrl}, '%')")
     List<TasksDTO> getTasksByUrl(@Param("fullUrl") String fullUrl);
 }

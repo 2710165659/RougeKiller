@@ -5,9 +5,12 @@ import com.rouge.rouge_springboot.mapper.TasksMapper;
 import com.rouge.rouge_springboot.model.dto.tasks.TasksDTO;
 import com.rouge.rouge_springboot.model.entity.Tasks;
 import com.rouge.rouge_springboot.service.TasksService;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +36,13 @@ public class TasksServiceImpl implements TasksService {
     @Override
     public boolean deleteTask(Long id) {
         return tasksMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public Tasks addTask(Tasks tasks) {
+        //获取用户id
+        tasks.setStatus("进行中");
+        tasksMapper.insert(tasks);
+        return tasks;
     }
 }

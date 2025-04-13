@@ -20,5 +20,18 @@ public interface TasksService {
      */
     boolean startTask(Long id);
 
+    /**
+     * 删除任务
+     * @param id
+     * @return
+     */
     boolean deleteTask(Long id);
+
+    /**
+     * 添加任务
+     * @param tasks
+     * @return
+     */
+    Tasks addTask(Tasks tasks);
+
 }

@@ -97,6 +97,7 @@
             </el-table>
         </div>
         <TaskInfo ref="taskInfoRef" />
+        <AddTask ref="addTaskRef" />
     </div>
 </template>
 
@@ -107,9 +108,11 @@ import { useReviewTask } from '@/store/reviewTask'
 import { onMounted } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import TaskInfo from '@/components/review/TaskInfo.vue'
+import AddTask from '@/components/review/AddTask.vue'
 
 const store = useReviewTask()
 const taskInfoRef = ref()
+const addTaskRef = ref()
 
 onMounted(async () => {
     store.searchTasks()
@@ -120,7 +123,7 @@ const handleSearch = () => {
 }
 
 const handleAddTask = () => {
-    console.log('新增检测任务:', searchForm.value.url)
+    addTaskRef.value.show()
 }
 
 const handleDeleteTask = async (id) => {

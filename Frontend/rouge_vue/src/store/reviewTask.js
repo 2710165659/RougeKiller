@@ -14,7 +14,6 @@ export const useReviewTask = defineStore("reviewTask", {
         const response = await http.get("/tasks", {
             params: { url:this.url }
         })
-        console.log(response);
         this.data = response.data
             if (this.status != "") {
                 this.data = this.data.filter(task => {
@@ -30,6 +29,10 @@ export const useReviewTask = defineStore("reviewTask", {
     async deleteTask(id) {
         const response = await http.delete("tasks/" + id)
         this.searchTasks()
+    },
+    async addTask(url) {
+        const response = await http.post("/tasks", { fullUrl: url })
+        this.resetSearch()
     },
     resetSearch() {
         this.url = ""
