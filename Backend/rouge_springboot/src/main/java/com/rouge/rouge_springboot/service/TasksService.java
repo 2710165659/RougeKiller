@@ -2,9 +2,11 @@ package com.rouge.rouge_springboot.service;
 
 import com.rouge.rouge_springboot.model.dto.tasks.TasksDTO;
 import com.rouge.rouge_springboot.model.entity.Tasks;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface TasksService {
     /**
      * 根据url查询任务

@@ -1,36 +1,20 @@
 <template>
     <div class="qa-container">
         <div class="messages" ref="messagesContainer">
-            <el-card
-                v-for="(msg, index) in qaStore.messages"
-                :key="index"
-                :class="['message-card', msg.role]"
-                shadow="hover"
-            >
-                <div
-                    class="message-content"
-                    v-html="qaStore.md.render(msg.content)"
-                ></div>
+            <el-card v-for="(msg, index) in qaStore.messages" :key="index" :class="['message-card', msg.role]"
+                shadow="hover">
+                <div class="message-content" v-html="qaStore.md.render(msg.content)"></div>
                 <div class="message-time">{{ formatTime(msg.timestamp) }}</div>
             </el-card>
             <el-loading v-if="qaStore.isLoading" />
         </div>
 
         <div class="input-area">
-            <el-input
-                v-model="inputMessage"
-                type="textarea"
-                :rows="3"
-                placeholder="输入您的问题..."
-                @keyup.enter.native="sendMessage"
-            />
+            <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="输入您的问题..."
+                @keyup.enter.native="sendMessage" />
             <div class="button-group">
-                <el-button
-                    type="primary"
-                    @click="sendMessage"
-                    :disabled="qaStore.isLoading"
-                    :loading="qaStore.isLoading"
-                >
+                <el-button type="primary" @click="sendMessage" :disabled="qaStore.isLoading"
+                    :loading="qaStore.isLoading">
                     发送
                 </el-button>
                 <el-button type="danger" @click="clearMessages">
@@ -50,10 +34,14 @@ const qaStore = useQaStore()
 const inputMessage = ref('')
 const messagesContainer = ref(null)
 
-const sendMessage = () => {
+const sendMessage = async () => {
     if (inputMessage.value.trim()) {
-        qaStore.sendMessage(inputMessage.value)
-        inputMessage.value = ''
+        try {
+            await qaStore.sendMessage(inputMessage.value)
+            inputMessage.value = ''
+        } catch (error) {
+            ElMessage.error(error.message || '发送消息失败')
+        }
     }
 }
 
@@ -181,6 +169,7 @@ watch(
 .el-button--primary {
     background-color: #3d444d;
 }
+
 .el-button--primary:hover {
     background-color: #4b535d;
     border-color: #4b535d;
@@ -189,6 +178,7 @@ watch(
 .el-button--danger {
     background-color: #5c3d3d;
 }
+
 .el-button--danger:hover {
     background-color: #6c4747;
     border-color: #6c4747;
