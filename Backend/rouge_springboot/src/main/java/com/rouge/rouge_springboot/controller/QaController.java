@@ -20,7 +20,7 @@ public class QaController {
     private QaService qaService;
 
     @PostMapping("/ask")
-    private ResponseEntity<String> ask(HttpServletRequest request, @RequestBody Map<String, String> body) {
+    public ResponseEntity<String> ask(HttpServletRequest request, @RequestBody Map<String, String> body) {
         String userId = (String) request.getAttribute("userId");
         String content = body.get("content");
         String sessionId = body.get("sessionId");

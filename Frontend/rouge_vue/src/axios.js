@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useAuthStore } from './store/auth'
+import router from './router'
 
 const http = axios.create({
   baseURL: '/api'
@@ -31,7 +32,7 @@ http.interceptors.response.use(response => {
     const authStore = useAuthStore()
     authStore.clearAuth()
     // 跳转到登录页
-    window.location.href = '/login'
+    router.push('/login')
   }
   return Promise.reject(error)
 })

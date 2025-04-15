@@ -20,6 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         List<String> excludePaths = Arrays.asList(
                 "/api/auth/login",
                 "/api/auth/register",
+                "/api/qa/sse",
                 "/api/websites");
 
         registry.addInterceptor(tokenInterceptor)

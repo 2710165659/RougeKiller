@@ -13,8 +13,9 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
+        ws: true, // 是否启用websockets
+        changeOrigin: true,
         // pathRewrite: { '^/api': '' },
-        changeOrigin: true
       }
     }
   }
