@@ -1,45 +1,42 @@
 package com.rouge.rouge_springboot.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rouge.rouge_springboot.service.QaService;
-import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-@RestController
-@RequestMapping("/api/qa")
-public class QaController {
-    // 可能导致内存泄漏
-    private static final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
-
+@Component
+public class QaController extends TextWebSocketHandler {
     @Autowired
-    private QaService qaService;
+    QaService qaService;
 
-    @PostMapping("/ask")
-    public ResponseEntity<String> ask(HttpServletRequest request, @RequestBody Map<String, String> body) {
-        String userId = (String) request.getAttribute("userId");
-        String content = body.get("content");
-        String sessionId = body.get("sessionId");
-
-        SseEmitter emitter = new SseEmitter(60_000L); // 60s超时
-
-        // 存储当前连接
-        emitters.put(userId, emitter);
-        // 回调函数：移除完成的emitter
-        emitter.onCompletion(() -> emitters.remove(userId));
-        emitter.onTimeout(() -> emitters.remove(userId));
-        emitter.onError((e) -> emitters.remove(userId));
-
-        qaService.handleEmitter(emitter, content ,sessionId);
-        return ResponseEntity.ok(userId);
-    }
-
-    @GetMapping("/sse/{id}")
-    public SseEmitter streamChat(@PathVariable String id) {
-        return emitters.get(id);
+    @Override
+    protected void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) {
+        try{
+            String payload = message.getPayload(); // {"content":"123\n","sessionId":""}
+            // 提取content和sessionId
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> map = objectMapper.readValue(
+                    payload,
+                    new TypeReference<Map<String, String>>() {}
+            );
+            String content = map.get("content");
+            String sessionId = map.get("sessionId");
+            // 处理请求
+            qaService.handleSession(session, content, sessionId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+
+
+

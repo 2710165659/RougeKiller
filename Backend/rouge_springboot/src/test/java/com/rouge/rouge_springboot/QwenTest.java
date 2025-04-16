@@ -25,6 +25,7 @@ public class QwenTest {
                 .appId("6124e78be439410d9207f89f10239931")
                 .prompt(content)
                 .sessionId(sessionId)
+                .incrementalOutput(true) // 增量输出
                 .build();
 
         Application application = new Application();

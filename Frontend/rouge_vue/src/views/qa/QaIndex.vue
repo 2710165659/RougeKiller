@@ -37,8 +37,9 @@ const messagesContainer = ref(null)
 const sendMessage = async () => {
     if (inputMessage.value.trim()) {
         try {
-            await qaStore.sendMessage(inputMessage.value)
+            const content = inputMessage.value
             inputMessage.value = ''
+            await qaStore.sendMessage(content)
         } catch (error) {
             ElMessage.error(error.message || '发送消息失败')
         }

@@ -10,12 +10,11 @@ module.exports = defineConfig({
   },
   // 代理服务器
   devServer: {
+    port: 8080,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
-        ws: true, // 是否启用websockets
         changeOrigin: true,
-        // pathRewrite: { '^/api': '' },
       }
     }
   }

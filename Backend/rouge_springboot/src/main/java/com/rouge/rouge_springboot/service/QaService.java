@@ -1,8 +1,8 @@
 package com.rouge.rouge_springboot.service;
 
 
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.socket.WebSocketSession;
 
 public interface QaService {
-  void handleEmitter(SseEmitter sseEmitter,String content,String sessionId);
+  void handleSession(WebSocketSession session, String content, String sessionId);
 }

@@ -8,69 +8,88 @@ export const useQaStore = defineStore('qa', {
     messages: [],
     isLoading: false,
     sessionId: '',
-    eventSource: null  // 用于保存SSE连接实例
+    socket: null,  // 用于保存websocket连接实例
+    currentMessage: null
   }),
   actions: {
     async sendMessage(content) {
-      try {
-        const userMessage = {
-          role: 'user',
-          content: content,
-          timestamp: new Date().toISOString()
-        }
-        this.messages.push(userMessage)
-        this.isLoading = true
+      this.isLoading = true;
+      const userMessage = {
+        role: 'user',
+        content: content,
+        timestamp: new Date().toISOString()
+      };
+      this.messages.push(userMessage);
 
-        const aiMessage = {
-          role: 'assistant',
-          content: '',
-          timestamp: new Date().toISOString()
-        }
-        this.messages.push(aiMessage)
+      // 创建AI消息占位
+      this.currentMessage = {
+        role: 'assistant',
+        content: '',
+        timestamp: new Date().toISOString()
+      };
+      this.messages.push(this.currentMessage);
 
-        // 如果SSE连接已经存在，则关闭连接
-        if (this.eventSource) {
-          this.eventSource.close()
-        }
-
-        const resp = await http.post('/qa/ask', { content: content, sessionId: this.sessionId })
-        // 建立SSE连接
-        this.eventSource = new EventSource(`/api/qa/sse/${resp.data}`)
-
-        this.eventSource.addEventListener('sessionId', (event) => {
-          this.sessionId = event.data
-        })
-
-        this.eventSource.addEventListener('text', (event) => {
-          const lastMessage = this.messages[this.messages.length - 1]
-          lastMessage.content = event.data // 不增量式，保持响应式更新
-        })
-
-        this.eventSource.onerror = (error) => {
-          this.eventSource.close()
-          this.eventSource = null
-          this.isLoading = false
-          throw new Error('SSE连接错误')
-        }
-      } catch (error) {
-        this.isLoading = false
-        if (this.eventSource) {
-          this.eventSource.close()
-          this.eventSource = null
-        }
-        throw error // 重新抛出错误，让调用者处理
+      if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+        await this.connect();
       }
-    }
-    ,
+
+      // 发送消息到WebSocket
+      this.socket.send(JSON.stringify({
+        content: content,
+        sessionId: this.sessionId
+      }));
+    },
     clearMessages() {
-      this.messages = []
-      this.isLoading = false
-      this.sessionId = ''
-      // 清除时关闭现有连接
-      if (this.eventSource) {
-        this.eventSource.close()
-        this.eventSource = null
+      this.messages = [];
+      this.isLoading = false;
+      this.sessionId = '';
+      this.currentMessage = null;
+    },
+    async connect() {
+      if (this.socket) {
+        this.socket.close()
       }
+      // WebSocket连接URL
+      const wsUrl = process.env.NODE_ENV === 'development'
+        ? `ws://${window.location.hostname}:3000/qa/ws`
+        : `ws://${window.location.host}/qa/ws`;
+
+      this.socket = new WebSocket(wsUrl)
+
+      this.socket.onmessage = (event) => {
+        const data = event.data
+        // sessionId-12346
+        // text-你好
+        // end-output stopped
+        const [type, content] = data.split('-')
+        if (type === 'sessionId') this.sessionId = content
+        if (type === 'text') this.currentMessage.content += content
+        if (type === 'end') this.isLoading = false
+      };
+
+      return new Promise((resolve, reject) => {
+        this.socket.onopen = () => {
+          console.log('WebSocket connected')
+          resolve()
+        }
+
+        this.socket.onerror = (error) => {
+          console.error('WebSocket错误:', error)
+          reject(error)
+        }
+
+        this.socket.onclose = () => {
+          console.log('WebSocket连接已关闭')
+        }
+      })
+    },
+    disconnect() {
+      if (this.socket) {
+        this.socket.close()
+        this.socket = null
+      }
+      this.isLoading = false
     }
+
   }
 })
