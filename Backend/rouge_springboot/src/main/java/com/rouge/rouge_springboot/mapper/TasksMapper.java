@@ -8,8 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 @Mapper
 public interface TasksMapper extends BaseMapper<Tasks> {
 
@@ -23,5 +21,6 @@ public interface TasksMapper extends BaseMapper<Tasks> {
             "   <if test='query.status != null'> AND (tasks.status = #{query.status} OR #{query.status} = '') </if>" +
             "</where>" + " ORDER BY tasks.created_at DESC " +
             "</script>")
-    IPage<TasksDTO.TasksResponseDTO> getTasks(IPage<TasksDTO.TasksResponseDTO> page, @Param("query") TasksDTO.TasksQueryDTO query);
+    IPage<TasksDTO.TasksResponseDTO> getTasks(IPage<TasksDTO.TasksResponseDTO> page,
+            @Param("query") TasksDTO.TasksQueryDTO query);
 }

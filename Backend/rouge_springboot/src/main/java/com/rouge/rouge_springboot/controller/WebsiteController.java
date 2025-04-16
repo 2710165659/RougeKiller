@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 /**
  * 网站信息控制器
@@ -25,16 +23,6 @@ public class WebsiteController {
 
     @Autowired
     private InfoService infoService;
-
-    /**
-     * 浏览器扩展api:获取所有黑名单url
-     *
-     * @return 黑名单url列表
-     */
-    @GetMapping
-    public ResponseEntity<List<String>> getMaliciousWebsiteUrls() {
-        return ResponseEntity.ok(websiteService.getMaliciousWebsiteUrls());
-    }
 
     /**
      * 获取基础统计信息
@@ -55,7 +43,6 @@ public class WebsiteController {
     public ResponseEntity<OtherInfoDTO> getOtherInfo() {
         return ResponseEntity.ok(infoService.getOtherInfo());
     }
-
 
     /**
      * 多条件查询网站信息

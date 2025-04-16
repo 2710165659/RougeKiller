@@ -1,9 +1,8 @@
 import { defineStore } from "pinia"
 import http from "@/axios"
-import { reactive, ref } from "vue"
 
 export const useReviewTask = defineStore("reviewTask", {
-  state: () => ({
+    state: () => ({
         data: [],
         loading: false,
         hasMore: true,
@@ -13,11 +12,11 @@ export const useReviewTask = defineStore("reviewTask", {
             page: 1,
             size: 10,
         }
-  }),
-  actions: {
-      async searchTasks(append = false) {
-          console.log(append);
-          
+    }),
+    actions: {
+        async searchTasks(append = false) {
+            // console.log(append);
+
             //append = true即为追加数据  
             //追加数据时，如果正在加载数据或者没有更多数据，则不执行请求
             if (append && (this.loading || !this.hasMore)) return
@@ -35,28 +34,29 @@ export const useReviewTask = defineStore("reviewTask", {
                 }
                 this.hasMore = response.data.length >= this.params.size
                 if (this.hasMore) this.params.page++
-            } finally {
+            }
+            finally {
                 this.loading = false
             }
-      },
-    async startTask(id) {
-        const response = await http.post("/tasks/start", { id })
-        this.searchTasks()
-    },
-    async deleteTask(id) {
-        const response = await http.delete("tasks/" + id)
-        this.searchTasks()
-    },
-    async addTask(url) {
-        const response = await http.post("/tasks", { fullUrl: url })
-        this.resetSearch()
-    },
-    resetSearch() {
-        this.params.url = ""
-        this.params.status = ""
-        this.params.page = 1
-        this.params.size = 10
-        this.searchTasks()
+        },
+        async startTask(id) {
+            await http.post("/tasks/start", { id })
+            await this.searchTasks()
+        },
+        async deleteTask(id) {
+            await http.delete("tasks/" + id)
+            await this.searchTasks()
+        },
+        async addTask(url) {
+            await http.post("/tasks", { fullUrl: url })
+            await this.resetSearch()
+        },
+        async resetSearch() {
+            this.params.url = ""
+            this.params.status = ""
+            this.params.page = 1
+            this.params.size = 10
+            await this.searchTasks()
+        }
     }
-  }
 })
