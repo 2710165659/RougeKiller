@@ -1,24 +1,31 @@
 <template>
     <div class="qa-container">
-        <div class="messages" ref="messagesContainer">
-            <el-card v-for="(msg, index) in qaStore.messages" :key="index" :class="['message-card', msg.role]"
-                shadow="hover">
-                <div class="message-content" v-html="qaStore.md.render(msg.content)"></div>
-                <div class="message-time">{{ formatTime(msg.timestamp) }}</div>
-            </el-card>
-            <el-loading v-if="qaStore.isLoading" />
+        <!-- 消息列表区域 -->
+        <div class="messages-container" ref="messagesContainer">
+            <div v-for="(message, index) in qaStore.messages" :key="index" :class="['message', message.role]">
+                <div class="message-content">
+                    <div v-if="message.role === 'assistant'" class="avatar">AI</div>
+                    <div v-else class="avatar">我</div>
+                    <div class="bubble">
+                        <div class="markdown-body" v-if="message.role === 'assistant'"
+                            v-html="qaStore.md.render(message.content)"></div>
+                        <div v-else>{{ message.content }}</div>
+                        <div class="timestamp">{{ formatTime(message.timestamp) }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="input-area">
-            <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="输入您的问题..."
-                @keyup.enter.native="sendMessage" />
+        <!-- 输入区域 -->
+        <div class="input-container">
+            <el-input v-model="inputMessage" placeholder="输入您的问题..." @keyup.enter="!isLoading && sendMessage()"
+                type="textarea" :rows="3" />
             <div class="button-group">
-                <el-button type="primary" @click="sendMessage" :disabled="qaStore.isLoading"
-                    :loading="qaStore.isLoading">
-                    发送
+                <el-button @click="clearMessages">
+                    清空对话
                 </el-button>
-                <el-button type="danger" @click="clearMessages">
-                    清除对话
+                <el-button type="primary" @click="sendMessage" :disabled="qaStore.isLoading">
+                    发送
                 </el-button>
             </div>
         </div>
@@ -28,11 +35,12 @@
 <script setup>
 import { useQaStore } from '@/store/qa'
 import { ElMessage } from 'element-plus'
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, computed } from 'vue'
 
 const qaStore = useQaStore()
 const inputMessage = ref('')
 const messagesContainer = ref(null)
+const isLoading = computed(() => qaStore.isLoading)
 
 const sendMessage = async () => {
     if (inputMessage.value.trim()) {
@@ -79,65 +87,90 @@ watch(
     padding: 20px;
 }
 
-.messages {
+.messages-container {
     flex: 1;
     overflow-y: auto;
-    padding: 10px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
-.message-card {
-    margin-bottom: 15px;
-    max-width: 80%;
-    border-radius: 10px;
-    border: none !important;
-}
-
-.message-card.user {
-    background-color: #5c6bc0;
-    margin-left: auto;
-}
-
-.message-card.assistant {
-    background-color: #424242;
-    margin-right: auto;
+.message {
+    margin-bottom: 20px;
 }
 
 .message-content {
-    margin-bottom: 5px;
-    color: white;
-}
-
-.message-time {
-    font-size: 0.8em;
-    opacity: 0.7;
-    text-align: right;
-    color: white;
-}
-
-.input-area {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
-    padding: 10px;
-    background-color: #3a3a3a;
-    border-radius: 8px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.user .avatar {
+    background-color: #95a5a6;
+}
+
+.assistant .avatar {
+    background-color: #2ecc71;
+}
+
+.bubble {
+    background: #2d3436;
+    padding: 12px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-break: break-word;
+}
+
+.markdown-body {
+    all: initial;
+    color: whitesmoke;
+    line-height: 2;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.input-container {
+    background: #2d3436;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .button-group {
     display: flex;
-    gap: 10px;
     justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 :deep(.el-textarea__inner) {
-    background-color: #2d2d2d;
+    background-color: #34495e;
     color: white;
     border: none;
 }
 
-:deep(.el-loading-mask) {
-    background-color: transparent;
+:deep(.el-textarea__inner:focus) {
+    box-shadow: none;
+}
+
+:deep(pre) {
+    background-color: #1e272e !important;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 /* 滚动条样式 */
@@ -158,30 +191,5 @@ watch(
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-/* 按钮样式 */
-.el-button {
-    border-color: #444c54;
-    color: #e5e5e5;
-    transition: all 0.3s ease;
-}
-
-.el-button--primary {
-    background-color: #3d444d;
-}
-
-.el-button--primary:hover {
-    background-color: #4b535d;
-    border-color: #4b535d;
-}
-
-.el-button--danger {
-    background-color: #5c3d3d;
-}
-
-.el-button--danger:hover {
-    background-color: #6c4747;
-    border-color: #6c4747;
 }
 </style>

@@ -38,7 +38,7 @@ public class QaServiceImpl implements QaService {
                     .reduce((first, second) -> second)
                     .blockingGet();
             session.sendMessage(new TextMessage("sessionId-" + lastResult.getOutput().getSessionId()));
-            session.sendMessage(new TextMessage("end-output stopped"));
+            session.sendMessage(new TextMessage("end-stopped"));
         } catch (NoApiKeyException | IOException | InputRequiredException e) {
             safeClose(session, new CloseStatus(4000, "Error"));
         }

@@ -10,7 +10,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -20,14 +19,14 @@ public class QaController extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) {
-        try{
+        try {
             String payload = message.getPayload(); // {"content":"123\n","sessionId":""}
             // 提取content和sessionId
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> map = objectMapper.readValue(
                     payload,
-                    new TypeReference<Map<String, String>>() {}
-            );
+                    new TypeReference<Map<String, String>>() {
+                    });
             String content = map.get("content");
             String sessionId = map.get("sessionId");
             // 处理请求
@@ -37,6 +36,3 @@ public class QaController extends TextWebSocketHandler {
         }
     }
 }
-
-
-

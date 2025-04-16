@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import MarkdownIt from 'markdown-it'
-import http from '@/axios'
 
 export const useQaStore = defineStore('qa', {
   state: () => ({
@@ -64,7 +63,10 @@ export const useQaStore = defineStore('qa', {
         const [type, content] = data.split('-')
         if (type === 'sessionId') this.sessionId = content
         if (type === 'text') this.currentMessage.content += content
-        if (type === 'end') this.isLoading = false
+        if (type === 'end') {
+          this.isLoading = false
+          console.log('对话结束')
+        }
       };
 
       return new Promise((resolve, reject) => {
