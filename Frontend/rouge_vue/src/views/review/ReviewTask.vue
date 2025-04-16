@@ -45,20 +45,6 @@
                         <el-button type="primary" @click="handleAddTask">
                             新增检测任务
                         </el-button>
-                        <el-button
-                            type="primary"
-                            @click="handlePrevPage"
-                            :disabled="store.params.page <= 1"
-                        >
-                            上一页
-                        </el-button>
-                        <el-button
-                            type="primary"
-                            @click="handleNextPage"
-                            :disabled="store.data.length < store.params.size"
-                        >
-                            下一页
-                        </el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -108,6 +94,20 @@
                         </el-button>
                     </template>
                 </el-table-column>
+                >
+                <template #append>
+                    <div v-if="store.loading" class="loading-more">
+                        加载中...
+                    </div>
+                    <div
+                        v-else-if="store.hasMore"
+                        class="load-more"
+                        @click="loadMore"
+                    >
+                        点击加载更多
+                    </div>
+                    <div v-else class="no-more">没有更多数据了</div>
+                </template>
             </el-table>
         </div>
         <TaskInfo ref="taskInfoRef" />
@@ -120,7 +120,7 @@ import { ref } from 'vue'
 import { Search, Refresh } from '@element-plus/icons-vue'
 import { useReviewTask } from '@/store/reviewTask'
 import { onMounted } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import TaskInfo from '@/components/review/TaskInfo.vue'
 import AddTask from '@/components/review/AddTask.vue'
 
@@ -149,6 +149,7 @@ const handleDeleteTask = async (id) => {
             effect: 'dark'
         })
         store.deleteTask(id)
+        ElMessage.error('删除成功')
     } catch (error) {
         // 用户点击取消
     }
@@ -157,16 +158,8 @@ const resetSearch = () => {
     store.resetSearch()
 }
 
-const handlePrevPage = () => {
-    if (store.params.page > 1) {
-        store.params.page--
-        store.searchTasks()
-    }
-}
-
-const handleNextPage = () => {
-    store.params.page++
-    store.searchTasks()
+const loadMore = () => {
+    store.searchTasks(true)
 }
 </script>
 
@@ -187,6 +180,14 @@ const handleNextPage = () => {
     display: flex;
     margin-top: 20px;
     padding-left: 5%;
+}
+
+.loading-more,
+.load-more,
+.no-more {
+    margin-top: 2px;
+    text-align: center;
+    color: #5f6468;
 }
 
 /* 表格样式 */
@@ -233,6 +234,7 @@ const handleNextPage = () => {
 }
 
 /* 按钮样式 */
+
 .el-button--primary {
     background-color: #3a5a9c;
     border-color: #4a6db3;

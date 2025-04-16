@@ -24,6 +24,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useReviewTask } from '@/store/reviewTask'
+import { ElMessage } from 'element-plus'
 
 const store = useReviewTask()
 const visible = ref(false)
@@ -38,6 +39,7 @@ const handleClose = (done) => {
 const handleSubmit = () => {
     store.addTask(form.value.url)
     visible.value = false
+    ElMessage.success('新增检测任务成功')
 }
 
 defineExpose({
