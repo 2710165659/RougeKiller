@@ -2,15 +2,26 @@
     <div class="qa-container">
         <!-- 消息列表区域 -->
         <div class="messages-container" ref="messagesContainer">
-            <div v-for="(message, index) in qaStore.messages" :key="index" :class="['message', message.role]">
+            <div
+                v-for="(message, index) in qaStore.messages"
+                :key="index"
+                :class="['message', message.role]"
+            >
                 <div class="message-content">
-                    <div v-if="message.role === 'assistant'" class="avatar">AI</div>
+                    <div v-if="message.role === 'assistant'" class="avatar">
+                        AI
+                    </div>
                     <div v-else class="avatar">我</div>
                     <div class="bubble">
-                        <div class="markdown-body" v-if="message.role === 'assistant'"
-                            v-html="qaStore.md.render(message.content)"></div>
+                        <div
+                            class="markdown-body"
+                            v-if="message.role === 'assistant'"
+                            v-html="qaStore.md.render(message.content)"
+                        ></div>
                         <div v-else>{{ message.content }}</div>
-                        <div class="timestamp">{{ formatTime(message.timestamp) }}</div>
+                        <div class="timestamp">
+                            {{ formatTime(message.timestamp) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -18,13 +29,20 @@
 
         <!-- 输入区域 -->
         <div class="input-container">
-            <el-input v-model="inputMessage" placeholder="输入您的问题..." @keyup.enter="!isLoading && sendMessage()"
-                type="textarea" :rows="3" />
+            <el-input
+                v-model="inputMessage"
+                placeholder="输入您的问题..."
+                @keyup.enter="!isLoading && sendMessage()"
+                type="textarea"
+                :rows="3"
+            />
             <div class="button-group">
-                <el-button @click="clearMessages">
-                    清空对话
-                </el-button>
-                <el-button type="primary" @click="sendMessage" :disabled="qaStore.isLoading">
+                <el-button @click="clearMessages"> 清空对话 </el-button>
+                <el-button
+                    type="primary"
+                    @click="sendMessage"
+                    :disabled="qaStore.isLoading"
+                >
                     发送
                 </el-button>
             </div>
@@ -135,6 +153,10 @@ watch(
     all: initial;
     color: whitesmoke;
     line-height: 2;
+    list-style-position: inside;
+}
+:deep(.markdown-body p) {
+    display: inline;
 }
 
 .timestamp {

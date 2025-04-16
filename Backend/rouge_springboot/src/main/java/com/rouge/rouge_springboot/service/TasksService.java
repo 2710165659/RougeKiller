@@ -13,7 +13,7 @@ public interface TasksService {
      * @param url
      * @return
      */
-    List<TasksDTO> searchByUrl(String url);
+    List<TasksDTO.TasksResponseDTO> searchTasks(TasksDTO.TasksQueryDTO queryDTO);
 
     /**
      * 开始任务

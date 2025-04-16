@@ -17,8 +17,8 @@ public class TasksController {
     @Autowired
     private TasksService tasksService;
     @GetMapping
-    public ResponseEntity<List<TasksDTO>> searchByUrl(String url) {
-        List<TasksDTO> tasks = tasksService.searchByUrl(url);
+    public ResponseEntity<List<TasksDTO.TasksResponseDTO>> searchTask(TasksDTO.TasksQueryDTO queryDTO) {
+        List<TasksDTO.TasksResponseDTO> tasks = tasksService.searchTasks(queryDTO);
         return ResponseEntity.ok(tasks);
     }
 
