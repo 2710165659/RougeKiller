@@ -7,7 +7,7 @@
                     <el-col :span="6">
                         <el-form-item label="URL">
                             <el-input
-                                v-model="store.url"
+                                v-model="store.params.url"
                                 placeholder="请输入URL"
                                 class="search-input"
                                 :prefix-icon="Search"
@@ -17,7 +17,7 @@
                     <el-col :span="5" :offset="1">
                         <el-form-item label="任务状态">
                             <el-select
-                                v-model="store.status"
+                                v-model="store.params.status"
                                 placeholder="请选择任务状态"
                                 effect="dark"
                             >
@@ -28,7 +28,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8" :offset="1">
+                    <el-col :span="11" :offset="1">
                         <el-button
                             type="primary"
                             @click="handleSearch"
@@ -44,6 +44,20 @@
                         >
                         <el-button type="primary" @click="handleAddTask">
                             新增检测任务
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            @click="handlePrevPage"
+                            :disabled="store.params.page <= 1"
+                        >
+                            上一页
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            @click="handleNextPage"
+                            :disabled="store.data.length < store.params.size"
+                        >
+                            下一页
                         </el-button>
                     </el-col>
                 </el-row>
@@ -141,6 +155,18 @@ const handleDeleteTask = async (id) => {
 }
 const resetSearch = () => {
     store.resetSearch()
+}
+
+const handlePrevPage = () => {
+    if (store.params.page > 1) {
+        store.params.page--
+        store.searchTasks()
+    }
+}
+
+const handleNextPage = () => {
+    store.params.page++
+    store.searchTasks()
 }
 </script>
 

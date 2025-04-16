@@ -39,7 +39,6 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public Tasks addTask(Tasks tasks) {
-        //获取用户id
         tasks.setStatus("进行中");
         tasksMapper.insert(tasks);
         return tasks;
