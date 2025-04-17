@@ -10,3 +10,10 @@ CREATE TABLE tasks (
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (success_id) REFERENCES websites(id) ON DELETE SET NULL
 ) COMMENT '任务表';
+
+ALTER TABLE websites
+ADD COLUMN (
+    screenshot_data LONGBLOB COMMENT '网站截图数据',
+    content TEXT COMMENT '网站内容',
+    labels TEXT COMMENT '分类标签'
+);
