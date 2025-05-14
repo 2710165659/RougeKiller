@@ -34,10 +34,10 @@ export const useWebsitesShowStore = defineStore("websitesShow", {
   actions: {
     async getData() {
       this.loading = true
-      const res1 = await http.get("/websites/base")
-      const res2 = await http.get("/websites/other")
-      this.loadBaseInfo(res1.data)
-      this.loadOtherInfo(res2.data)
+      // const res1 = await http.get("/websites/base")
+      // const res2 = await http.get("/websites/other")
+      // this.loadBaseInfo(res1.data)
+      // this.loadOtherInfo(res2.data)
       this.loading = false
     },
     loadBaseInfo(data) {
