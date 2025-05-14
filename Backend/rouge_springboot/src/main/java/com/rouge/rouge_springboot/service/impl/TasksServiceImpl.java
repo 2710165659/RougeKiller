@@ -41,7 +41,7 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public Tasks addTask(Tasks tasks) {
-        tasks.setStatus("进行中");
+//        tasks.setStatus("进行中");
         tasksMapper.insert(tasks);
         return tasks;
     }
