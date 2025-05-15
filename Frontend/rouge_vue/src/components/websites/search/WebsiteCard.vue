@@ -25,12 +25,8 @@
                 <span class="info-value">{{ data.port }}</span>
             </div>
             <div class="info-item">
-                <span class="info-label">所属：</span>
-                <span class="info-value">{{ data.company }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">备案：</span>
-                <span class="info-value">{{ data.serviceCode }}</span>
+                <span class="info-label">ip：</span>
+                <span class="info-value">{{ data.ip }}</span>
             </div>
         </div>
     </div>
